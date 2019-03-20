@@ -1,16 +1,18 @@
-package pigeon;
+package br.edu.ifce.pigeon.jobs;
 
-import views.IPigeonView;
-import views.MainWindow.PigeonAnimState;
+import br.edu.ifce.pigeon.views.IPigeonController;
+import br.edu.ifce.pigeon.models.MailBox;
 
 import java.util.concurrent.Semaphore;
+
+import static br.edu.ifce.pigeon.views.IPigeonController.AnimState.TRAVEL_LEFT_TO_RIGHT;
 
 public class PigeonThread extends Thread {
     private int max_capacity;
     private int load_time;
     private int unload_time;
     private int flight_time;
-    private IPigeonView pigeon;
+    private IPigeonController pigeon;
     private boolean alive;
 
     private static Semaphore semaphore_pigeon = new Semaphore(0);
@@ -24,7 +26,7 @@ public class PigeonThread extends Thread {
         this.flight_time = flight_time;
     }
 
-    public void setPigeon(IPigeonView pigeon) {
+    public void setPigeon(IPigeonController pigeon) {
         this.pigeon = pigeon;
     }
 
@@ -55,7 +57,7 @@ public class PigeonThread extends Thread {
     }
 
     private void fly_right_to_left() {
-        this.pigeon.setPigeonFrame(0, PigeonAnimState.TRAVEL_LEFT_TO_RIGHT);
+        this.pigeon.refreshPigeonFrame(TRAVEL_LEFT_TO_RIGHT);
     }
 
     private void unload_box() {

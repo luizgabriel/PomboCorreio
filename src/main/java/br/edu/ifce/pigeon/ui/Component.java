@@ -1,36 +1,32 @@
-package views;
+package br.edu.ifce.pigeon.ui;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 
-public class View {
+public final class Component {
 
-    private final Scene scene;
+    private Component() {} //Prevent instantiation
 
-    public View(String viewName) throws IOException {
+    public static Parent load(String name) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(View.class.getResource(String.format("fxml/%s", viewName)));
-
-        this.scene = new Scene(loader.load());
+        loader.setLocation(Component.getResource(String.format("fxml/%s", name)));
+        return loader.load();
     }
 
-    public Scene getScene() {
-        return this.scene;
+    public static URL getResource(String path) {
+        return Component.class.getClassLoader().getResource(path);
     }
 
-    public Node lookup(String query) {
-        return this.scene.lookup(query);
-    }
-
-    public static BufferedImage loadImageBuffer(String path) throws IOException {
-        return ImageIO.read(View.class.getResourceAsStream(String.format("img/%s", path)));
+    public static BufferedImage loadImageBuffer(String name) throws IOException {
+        return ImageIO.read(getResource(String.format("img/%s", name)));
     }
 
     public static WritableImage loadImage(BufferedImage image) {

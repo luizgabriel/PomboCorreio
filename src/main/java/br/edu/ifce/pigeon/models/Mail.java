@@ -1,4 +1,4 @@
-package pigeon;
+package br.edu.ifce.pigeon.models;
 
 import java.util.UUID;
 

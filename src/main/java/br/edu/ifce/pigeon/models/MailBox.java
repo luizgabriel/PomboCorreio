@@ -1,4 +1,4 @@
-package pigeon;
+package br.edu.ifce.pigeon.models;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -33,6 +33,8 @@ public class MailBox {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 
     public int getCapacity() {

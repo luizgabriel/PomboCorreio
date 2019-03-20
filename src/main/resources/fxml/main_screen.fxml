@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
@@ -11,11 +13,13 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+      <JFXDrawer id="navigation-drawer" defaultDrawerSize="220.0" />
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="633.0" prefWidth="800.0">
          <children>
-            <ImageView id="image-view-pigeon" fitHeight="85.0" fitWidth="75.0" layoutX="32.0" layoutY="145.0" pickOnBounds="true" preserveRatio="true" />
+            <JFXHamburger id="menu-btn" alignment="TOP_RIGHT" layoutX="754.0" layoutY="14.0" prefHeight="22.0" prefWidth="32.0" />
+            <ImageView id="image-view-pigeon" fitHeight="114.0" fitWidth="127.0" layoutX="337.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true" />
          </children>
     </AnchorPane>
   </children>
