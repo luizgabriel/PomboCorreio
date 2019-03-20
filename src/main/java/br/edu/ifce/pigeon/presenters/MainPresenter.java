@@ -46,7 +46,7 @@ public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeon
     public void onClickHirePigeonBtn() {
         getView().setHirePigeonDisable(true);
         getView().setFirePigeonDisable(false);
-        //getView().openCreatePigeonModal();
+        getView().openCreatePigeonModal();
 
         pigeonThread = new PigeonThread(20, 5, 5, 10);
         pigeonThread.setPigeon(this);

@@ -15,12 +15,16 @@
 
 <VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-      <JFXDrawer id="navigation-drawer" defaultDrawerSize="220.0" />
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="633.0" prefWidth="800.0">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
-            <JFXHamburger id="menu-btn" alignment="TOP_RIGHT" layoutX="754.0" layoutY="14.0" prefHeight="22.0" prefWidth="32.0" />
-            <ImageView id="image-view-pigeon" fitHeight="114.0" fitWidth="127.0" layoutX="337.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true" />
+            <JFXDrawer id="navigation-drawer" defaultDrawerSize="220.0" />
+          <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="633.0" prefWidth="800.0">
+               <children>
+                  <JFXHamburger id="menu-btn" alignment="TOP_RIGHT" layoutX="754.0" layoutY="14.0" prefHeight="22.0" prefWidth="32.0" />
+                  <ImageView id="image-view-pigeon" fitHeight="114.0" fitWidth="127.0" layoutX="337.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+          </AnchorPane>
          </children>
-    </AnchorPane>
+      </AnchorPane>
   </children>
 </VBox>
