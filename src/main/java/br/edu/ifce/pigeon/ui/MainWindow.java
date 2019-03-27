@@ -112,16 +112,12 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void openCreatePigeonModal() {
-        try {
-            Stage stage = new Stage();
-            stage.setScene(new Scene(this.createPigeonWindow.getRoot()));
-            stage.setTitle("Contratar pombo");
-            stage.setResizable(false);
-            stage.setIconified(false);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Stage stage = new Stage();
+        stage.setScene(new Scene(this.createPigeonWindow.getRoot()));
+        stage.setTitle("Contratar pombo");
+        stage.setResizable(false);
+        stage.setIconified(false);
+        stage.show();
     }
 
     @Override
