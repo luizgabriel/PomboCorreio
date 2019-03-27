@@ -31,6 +31,7 @@ public class MainWindow implements IMainWindow {
     private final HamburgerSlideCloseTransition transition;
     private final JFXButton hirePigeonBtn;
     private final JFXButton firePigeonBtn;
+    private final CreatePigeonWindow createPigeonWindow;
 
     public MainWindow() throws IOException {
         root = Component.load("main_screen.fxml");
@@ -43,6 +44,7 @@ public class MainWindow implements IMainWindow {
         hirePigeonBtn = (JFXButton) menu.lookup("#hire-pigeon-btn");
         firePigeonBtn = (JFXButton) menu.lookup("#fire-pigeon-btn");
         transition = new HamburgerSlideCloseTransition(hamburgerBtn);
+        createPigeonWindow = new CreatePigeonWindow();
 
         transition.setRate(-1);
         imageView.setLayoutY(200);
@@ -112,7 +114,7 @@ public class MainWindow implements IMainWindow {
     public void openCreatePigeonModal() {
         try {
             Stage stage = new Stage();
-            stage.setScene(new Scene(Component.load("pigeon_constructor.fxml")));
+            stage.setScene(new Scene(this.createPigeonWindow.getRoot()));
             stage.setTitle("Contratar pombo");
             stage.setResizable(false);
             stage.setIconified(false);
