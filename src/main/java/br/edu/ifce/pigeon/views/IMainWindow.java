@@ -9,6 +9,7 @@ public interface IMainWindow {
 
     void loadPigeonFrames(int framesCount);
     void setPigeonFrame(int frame, PigeonFacingDirection direction);
+    void setPigeonPosition(float position);
     void toggleMenu();
     void openCreatePigeonModal();
     void openCreateUserModal();

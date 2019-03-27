@@ -15,4 +15,12 @@ public class User {
         this.id = UUID.randomUUID().hashCode();
         this.image = (currentImage++) % MAX_IMAGES;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getImage() {
+        return image;
+    }
 }
