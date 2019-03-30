@@ -1,33 +1,41 @@
 package br.edu.ifce.pigeon.jobs;
 
-import br.edu.ifce.pigeon.views.IPigeonController;
 import br.edu.ifce.pigeon.models.MailBox;
+import br.edu.ifce.pigeon.views.IPigeonController;
 
 import java.util.concurrent.Semaphore;
 
-import static br.edu.ifce.pigeon.views.IPigeonController.AnimState.TRAVEL_LEFT_TO_RIGHT;
+import static br.edu.ifce.pigeon.views.IPigeonController.AnimState.*;
 
 public class PigeonThread extends Thread {
+    private final IPigeonController view;
+    private final MailBox mailBox;
     private int max_capacity;
     private int load_time;
     private int unload_time;
     private int flight_time;
-    private IPigeonController pigeon;
     private boolean alive;
 
-    private static Semaphore semaphore_pigeon = new Semaphore(0);
-    private static Semaphore mutex = new Semaphore(1);
+    private Semaphore semaphore_pigeon;
+    private Semaphore mutex;
 
-    public PigeonThread(int max_capacity, int load_time, int unload_time, int flight_time) {
+    public PigeonThread(IPigeonController view, MailBox mailBox) {
+        this.view = view;
+        this.mailBox = mailBox;
         this.alive = true;
-        this.max_capacity = max_capacity;
-        this.load_time = load_time;
-        this.unload_time = unload_time;
-        this.flight_time = flight_time;
     }
 
-    public void setPigeon(IPigeonController pigeon) {
-        this.pigeon = pigeon;
+    public void init(int max_capacity, int load_time, int unload_time, int flight_time) {
+        this.semaphore_pigeon = new Semaphore(0);
+        this.mutex = new Semaphore(1);
+
+        this.max_capacity = max_capacity;
+        this.load_time = load_time * 1000;
+        this.unload_time = unload_time * 1000;
+        this.flight_time = flight_time * 1000;
+        this.view.refreshPigeonFrame(IPigeonController.AnimState.LOADING);
+
+        this.start();
     }
 
     public void fire() {
@@ -41,14 +49,12 @@ public class PigeonThread extends Thread {
                 semaphore_pigeon.acquire();
                 mutex.acquire();
 
-                for (int i = 1; i <= max_capacity; ++i) {
-                    MailBox.getInstance().take();
-                }
+                loadBox();
 
                 mutex.release();
-                fly_left_to_right();
+                fly(TRAVEL_LEFT_TO_RIGHT);
                 unload_box();
-                fly_right_to_left();
+                fly(TRAVEL_RIGHT_TO_LEFT);
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -56,15 +62,62 @@ public class PigeonThread extends Thread {
         }
     }
 
-    private void fly_right_to_left() {
-        this.pigeon.refreshPigeonFrame(TRAVEL_LEFT_TO_RIGHT);
+    private void loadBox() {
+        long elapsed = 0;
+
+        while (this.alive && (elapsed < unload_time)) {
+            elapsed += 80;
+
+            view.refreshPigeonFrame(LOADING);
+            view.setPigeonPosition(1);
+            try {
+                Thread.sleep(80);
+            } catch (InterruptedException e) {
+            }
+        }
+
+        for (int i = 0; i < this.max_capacity; i++) {
+            this.mailBox.take();
+        }
     }
 
     private void unload_box() {
+        int elapsed = 0;
+
+        while (this.alive && (elapsed < unload_time)) {
+            this.view.refreshPigeonFrame(UNLOADING);
+            this.view.setPigeonPosition(1);
+            elapsed += 80;
+
+            try {
+                Thread.sleep(80);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    private void fly_left_to_right() {
+    private void fly(IPigeonController.AnimState anim) {
+        int elapsed = 0;
+
+        while (this.alive && (elapsed < flight_time)) {
+            view.refreshPigeonFrame(anim);
+            view.setPigeonPosition(elapsed / ((float) flight_time));
+            elapsed += 80;
+
+            try {
+                Thread.sleep(80);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
+    public int getMaxCapacity() {
+        return this.max_capacity;
+    }
 
+    public void wakeUp() {
+        this.semaphore_pigeon.release();
+    }
 }

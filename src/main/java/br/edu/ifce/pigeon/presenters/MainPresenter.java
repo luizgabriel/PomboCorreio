@@ -1,6 +1,8 @@
 package br.edu.ifce.pigeon.presenters;
 
-import br.edu.ifce.pigeon.jobs.PigeonThread;
+import br.edu.ifce.pigeon.jobs.ThreadController;
+import br.edu.ifce.pigeon.models.Mail;
+import br.edu.ifce.pigeon.models.User;
 import br.edu.ifce.pigeon.views.IMainWindow;
 import br.edu.ifce.pigeon.views.IPigeonController;
 
@@ -8,21 +10,35 @@ public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeon
     private int currentPigeonFrame;
     private static final int MAX_PIGEON_FRAMES = 9;
 
-    private PigeonThread pigeonThread;
+    private final ThreadController controller;
+    private IMainWindow.PigeonFacingDirection direction;
 
     public MainPresenter(IMainWindow view) {
         super(view);
+        this.controller = new ThreadController(this);
     }
 
     @Override
-    public void onLoadView(){
+    public void onLoadView() {
         getView().loadPigeonFrames(MAX_PIGEON_FRAMES);
+
+        this.controller.initMailBox(10);
+        this.controller.initPigeonThread(4, 5, 5, 10);
+
+        User u = new User(10);
+        this.controller.getMailBox().put(new Mail(u));
+        this.controller.getMailBox().put(new Mail(u));
+        this.controller.getMailBox().put(new Mail(u));
+        this.controller.getMailBox().put(new Mail(u));
+        this.controller.getMailBox().put(new Mail(u));
+        this.controller.getMailBox().put(new Mail(u));
+        this.controller.getMailBox().put(new Mail(u));
+        this.controller.getMailBox().put(new Mail(u));
     }
 
     @Override
     public void refreshPigeonFrame(AnimState state) {
         currentPigeonFrame = (currentPigeonFrame + 1) % MAX_PIGEON_FRAMES;
-        IMainWindow.PigeonFacingDirection direction;
 
         switch (state) {
             default:
@@ -47,23 +63,30 @@ public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeon
         getView().setHirePigeonDisable(true);
         getView().setFirePigeonDisable(false);
         getView().openCreatePigeonModal();
-
-        pigeonThread = new PigeonThread(20, 5, 5, 10);
-        pigeonThread.setPigeon(this);
-        pigeonThread.start();
     }
 
     public void onClickFirePigeonBtn() {
+        this.controller.firePigeon();
+
         getView().setHirePigeonDisable(false);
         getView().setFirePigeonDisable(true);
         getView().firePigeon();
-
-        if (pigeonThread != null)
-            pigeonThread.fire();
     }
 
     public void onClickAddUserBtn() {
         getView().openCreateUserModal();
     }
 
+    @Override
+    public void setPigeonPosition(float position) {
+        switch (direction) {
+            case LEFT:
+                getView().setPigeonPosition(1 - position);
+                break;
+            default:
+            case RIGHT:
+                getView().setPigeonPosition(position);
+                break;
+        }
+    }
 }

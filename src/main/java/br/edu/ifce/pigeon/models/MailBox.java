@@ -1,24 +1,33 @@
 package br.edu.ifce.pigeon.models;
 
+import br.edu.ifce.pigeon.jobs.PigeonThread;
+import java.util.Iterator;
+import java.util.Spliterator;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
+import java.util.function.Consumer;
 
-public class MailBox {
+public class MailBox implements Iterable<Mail> {
     private BlockingQueue<Mail> queue;
-    private int maxCapacity;
+    private PigeonThread pigeonThread;
+    private Semaphore mutex;
 
-    private static MailBox instance;
-    private static Semaphore mutex;
+    public MailBox(int capacity) {
+        mutex = new Semaphore(capacity);
+        queue = new LinkedBlockingQueue<>();
+    }
 
-    private MailBox(int initialCapacity) {
-        maxCapacity = initialCapacity;
-        mutex = new Semaphore(initialCapacity);
-        queue = new LinkedBlockingQueue<>(maxCapacity);
+    public void setPigeonThread(PigeonThread pigeonThread) {
+        this.pigeonThread = pigeonThread;
     }
 
     public void put(Mail m) {
         try {
+            if (this.pigeonThread != null && (this.queue.size() % this.pigeonThread.getMaxCapacity() == 0)) {
+                this.pigeonThread.wakeUp();
+            }
+
             mutex.acquire();
             queue.put(m);
         } catch (InterruptedException e) {
@@ -37,24 +46,22 @@ public class MailBox {
         return null;
     }
 
-    public int getCapacity() {
-        return this.maxCapacity;
+    @Override
+    public Iterator<Mail> iterator() {
+        return this.queue.iterator();
     }
 
-    public int getRemaningCapacity() {
-        return this.queue.remainingCapacity();
+    @Override
+    public void forEach(Consumer<? super Mail> action) {
+        this.queue.forEach(action);
     }
 
-    public int size() {
+    @Override
+    public Spliterator<Mail> spliterator() {
+        return this.queue.spliterator();
+    }
+
+    public int getCount() {
         return this.queue.size();
     }
-
-    public static MailBox getInstance() {
-        if (instance == null) {
-            instance = new MailBox(10);
-        }
-
-        return instance;
-    }
-
 }

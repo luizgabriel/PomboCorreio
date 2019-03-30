@@ -31,6 +31,7 @@ public class MainWindow implements IMainWindow {
     private final HamburgerSlideCloseTransition transition;
     private final JFXButton hirePigeonBtn;
     private final JFXButton firePigeonBtn;
+    private final CreatePigeonWindow createPigeonWindow;
 
     public MainWindow() throws IOException {
         root = Component.load("main_screen.fxml");
@@ -43,8 +44,10 @@ public class MainWindow implements IMainWindow {
         hirePigeonBtn = (JFXButton) menu.lookup("#hire-pigeon-btn");
         firePigeonBtn = (JFXButton) menu.lookup("#fire-pigeon-btn");
         transition = new HamburgerSlideCloseTransition(hamburgerBtn);
+        createPigeonWindow = new CreatePigeonWindow();
 
         transition.setRate(-1);
+        imageView.setLayoutY(200);
         navigationDrawer.setSidePane(menu);
         hamburgerBtn.setOnMouseClicked(e -> presenter.onClickMenuBtn());
         hirePigeonBtn.setOnMouseClicked(e -> presenter.onClickHirePigeonBtn());
@@ -109,16 +112,12 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void openCreatePigeonModal() {
-        try {
-            Stage stage = new Stage();
-            stage.setScene(new Scene(Component.load("pigeon_constructor.fxml")));
-            stage.setTitle("Contratar pombo");
-            stage.setResizable(false);
-            stage.setIconified(false);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Stage stage = new Stage();
+        stage.setScene(new Scene(this.createPigeonWindow.getRoot()));
+        stage.setTitle("Contratar pombo");
+        stage.setResizable(false);
+        stage.setIconified(false);
+        stage.show();
     }
 
     @Override
@@ -137,7 +136,13 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void firePigeon() {
-        //TODO
+        this.imageView.setImage(null);
+    }
+
+    @Override
+    public void setPigeonPosition(float position) {
+        this.imageView.setLayoutX(50 + position * 500);
+        System.out.println(50 + position * 500);
     }
 
     @Override
