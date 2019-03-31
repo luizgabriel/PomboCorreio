@@ -3,6 +3,7 @@ package br.edu.ifce.pigeon.presenters;
 import br.edu.ifce.pigeon.jobs.ThreadController;
 import br.edu.ifce.pigeon.models.Mail;
 import br.edu.ifce.pigeon.models.User;
+import br.edu.ifce.pigeon.navigation.Navigation;
 import br.edu.ifce.pigeon.views.IMainWindow;
 import br.edu.ifce.pigeon.views.IPigeonController;
 
@@ -15,15 +16,15 @@ public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeon
 
     public MainPresenter(IMainWindow view) {
         super(view);
-        this.controller = new ThreadController(this);
+        this.controller = ThreadController.getInstance();
     }
 
     @Override
     public void onLoadView() {
         getView().loadPigeonFrames(MAX_PIGEON_FRAMES);
 
+        this.controller.setPigeonController(this);
         this.controller.initMailBox(10);
-        this.controller.initPigeonThread(4, 5, 5, 10);
 
         User u = new User(10);
         this.controller.getMailBox().put(new Mail(u));
@@ -60,21 +61,27 @@ public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeon
     }
 
     public void onClickHirePigeonBtn() {
-        getView().setHirePigeonDisable(true);
-        getView().setFirePigeonDisable(false);
-        getView().openCreatePigeonModal();
+        Navigation.openCreatePigeon();
     }
 
     public void onClickFirePigeonBtn() {
-        this.controller.firePigeon();
+        controller.firePigeon();
+    }
 
+    public void enablePigeonCreation() {
         getView().setHirePigeonDisable(false);
         getView().setFirePigeonDisable(true);
         getView().firePigeon();
     }
 
+    @Override
+    public void disablePigeonCreation() {
+        getView().setHirePigeonDisable(true);
+        getView().setFirePigeonDisable(false);
+    }
+
     public void onClickAddUserBtn() {
-        getView().openCreateUserModal();
+        Navigation.openCreateUser();
     }
 
     @Override

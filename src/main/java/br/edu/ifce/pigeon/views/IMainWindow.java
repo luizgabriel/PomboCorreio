@@ -1,5 +1,7 @@
 package br.edu.ifce.pigeon.views;
 
+import br.edu.ifce.pigeon.jobs.ThreadController;
+
 public interface IMainWindow {
 
     enum PigeonFacingDirection {
@@ -11,8 +13,6 @@ public interface IMainWindow {
     void setPigeonFrame(int frame, PigeonFacingDirection direction);
     void setPigeonPosition(float position);
     void toggleMenu();
-    void openCreatePigeonModal();
-    void openCreateUserModal();
     void firePigeon();
     void setHirePigeonDisable(boolean disabled);
     void setFirePigeonDisable(boolean disabled);

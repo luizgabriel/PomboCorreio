@@ -1,5 +1,7 @@
 package br.edu.ifce.pigeon;
 
+import br.edu.ifce.pigeon.navigation.JavaFXNavigation;
+import br.edu.ifce.pigeon.navigation.Navigation;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -14,6 +16,8 @@ public class PomboCorreioApplication extends Application {
         primaryStage.setResizable(false);
         primaryStage.setTitle("IFCE .:: POMBO-CORREIO");
         primaryStage.show();
+
+        Navigation.getInstance().setNavigationImpl(new JavaFXNavigation(primaryStage));
     }
 
 }

@@ -46,6 +46,7 @@ public class PigeonThread extends Thread {
     public void run() {
         while (this.alive) {
             try {
+                //TODO: Pombo dorme quando nasce e já existem cartas
                 semaphore_pigeon.acquire();
                 mutex.acquire();
 

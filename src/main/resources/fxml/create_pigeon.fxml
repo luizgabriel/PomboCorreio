@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="403.0" prefWidth="306.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox id="rootPane" prefHeight="353.0" prefWidth="305.0">
+         <children>
+            <Label text="Contratar Pombo">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <Label text="Capacidade">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="41.0" prefWidth="265.0">
+               <children>
+                  <JFXTextField id="capacityTxtField" labelFloat="true" prefHeight="27.0" prefWidth="201.0" />
+                  <Label text="cartas" textFill="#9a9797">
+                     <padding>
+                        <Insets left="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <Label text="Tempo de carga">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="41.0" prefWidth="265.0">
+               <children>
+                  <JFXTextField id="loadTimeTxtField" labelFloat="true" prefHeight="27.0" prefWidth="201.0" />
+                  <Label text="segundos" textFill="#9a9797">
+                     <padding>
+                        <Insets left="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <Label text="Tempo de descarga">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="41.0" prefWidth="265.0">
+               <children>
+                  <JFXTextField id="unloadTimeTxtField" labelFloat="true" prefHeight="27.0" prefWidth="201.0" />
+                  <Label text="segundos" textFill="#9a9797">
+                     <padding>
+                        <Insets left="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <Label text="Tempo de transporte">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="41.0" prefWidth="265.0">
+               <children>
+                  <JFXTextField id="travelTimeTxtField" labelFloat="true" prefHeight="27.0" prefWidth="204.0" />
+                  <Label text="segundos" textFill="#9a9797">
+                     <padding>
+                        <Insets left="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <JFXButton id="saveBtn" buttonType="RAISED" prefHeight="39.0" prefWidth="265.0" style="-fx-background-color: #2196F3;" text="CONTRATAR" textFill="#e4dddd">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </JFXButton>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="15.0" top="15.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -6,7 +6,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -18,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainWindow implements IMainWindow {
-    private final Parent root;
+    private final Parent root = Component.load("main_screen.fxml");
     private final MainPresenter presenter = new MainPresenter(this);
 
     //Pigeon Frames
@@ -31,11 +30,9 @@ public class MainWindow implements IMainWindow {
     private final HamburgerSlideCloseTransition transition;
     private final JFXButton hirePigeonBtn;
     private final JFXButton firePigeonBtn;
-    private final CreatePigeonWindow createPigeonWindow;
 
     public MainWindow() throws IOException {
-        root = Component.load("main_screen.fxml");
-        Node menu = Component.load("navigation_menu.fxml");
+        Parent menu = Component.load("navigation_menu.fxml");
 
         JFXHamburger hamburgerBtn = (JFXHamburger) root.lookup("#menu-btn");
         JFXButton addUserBtn = (JFXButton) menu.lookup("#add-user-btn");
@@ -44,7 +41,6 @@ public class MainWindow implements IMainWindow {
         hirePigeonBtn = (JFXButton) menu.lookup("#hire-pigeon-btn");
         firePigeonBtn = (JFXButton) menu.lookup("#fire-pigeon-btn");
         transition = new HamburgerSlideCloseTransition(hamburgerBtn);
-        createPigeonWindow = new CreatePigeonWindow();
 
         transition.setRate(-1);
         imageView.setLayoutY(200);
@@ -108,30 +104,6 @@ public class MainWindow implements IMainWindow {
             }
         }
         return mirrored;
-    }
-
-    @Override
-    public void openCreatePigeonModal() {
-        Stage stage = new Stage();
-        stage.setScene(new Scene(this.createPigeonWindow.getRoot()));
-        stage.setTitle("Contratar pombo");
-        stage.setResizable(false);
-        stage.setIconified(false);
-        stage.show();
-    }
-
-    @Override
-    public void openCreateUserModal() {
-        try {
-            Stage stage = new Stage();
-            stage.setScene(new Scene(Component.load("add_user.fxml")));
-            stage.setTitle("Adicionar pombo");
-            stage.setResizable(false);
-            stage.setIconified(false);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

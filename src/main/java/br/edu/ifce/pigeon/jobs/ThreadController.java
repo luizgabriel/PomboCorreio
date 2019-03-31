@@ -1,7 +1,6 @@
 package br.edu.ifce.pigeon.jobs;
 
 import br.edu.ifce.pigeon.models.MailBox;
-import br.edu.ifce.pigeon.models.MailBox;
 import br.edu.ifce.pigeon.models.User;
 import br.edu.ifce.pigeon.views.IPigeonController;
 
@@ -10,14 +9,24 @@ import java.util.Map;
 
 public class ThreadController {
 
-    private final IPigeonController pigeonController;
     private MailBox mailBox;
     private PigeonThread pigeonThread;
     private Map<Integer, UserThread> userThreads;
 
-    public ThreadController(IPigeonController pigeonController) {
-        this.pigeonController = pigeonController;
+    private IPigeonController pigeonController;
+
+    private ThreadController() {
         this.userThreads = new HashMap<>();
+    }
+
+    public void setPigeonController(IPigeonController pigeonController) {
+        this.pigeonController = pigeonController;
+
+        if (pigeonThread == null) {
+            this.pigeonController.enablePigeonCreation();
+        } else {
+            this.pigeonController.disablePigeonCreation();
+        }
     }
 
     public MailBox getMailBox() {
@@ -29,16 +38,21 @@ public class ThreadController {
     }
 
     public void initPigeonThread(int maxCapacity, int loadTime, int unloadTime, int flightTime) {
-        this.firePigeon();
+        if (pigeonThread == null) {
+            pigeonThread = new PigeonThread(this.pigeonController, this.mailBox);
+            pigeonThread.init(maxCapacity, loadTime, unloadTime, flightTime);
+            mailBox.setPigeonThread(pigeonThread);
 
-        this.pigeonThread = new PigeonThread(this.pigeonController, this.mailBox);
-        this.pigeonThread.init(maxCapacity, loadTime, unloadTime, flightTime);
-        this.mailBox.setPigeonThread(this.pigeonThread);
+            pigeonController.disablePigeonCreation();
+        }
     }
 
     public void firePigeon() {
         if (this.pigeonThread != null) {
             this.pigeonThread.fire();
+            this.pigeonController.enablePigeonCreation();
+
+            this.pigeonThread = null;
         }
     }
 
@@ -53,5 +67,14 @@ public class ThreadController {
     public void fireUser(User user) {
         UserThread thread = this.userThreads.remove(user.getId());
         thread.fire();
+    }
+
+    private static ThreadController instance;
+    public static ThreadController getInstance() {
+        if (instance == null) {
+            instance = new ThreadController();
+        }
+
+        return instance;
     }
 }
