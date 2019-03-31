@@ -46,8 +46,11 @@ public class PigeonThread extends Thread {
     public void run() {
         while (this.alive) {
             try {
-                //TODO: Pombo dorme quando nasce e já existem cartas
-                semaphore_pigeon.acquire();
+                if (mailBox.getCount() < getMaxCapacity()) {
+                    view.refreshPigeonFrame(LOADING);
+                    view.setPigeonPosition(1);
+                    semaphore_pigeon.acquire();
+                }
                 mutex.acquire();
 
                 loadBox();
