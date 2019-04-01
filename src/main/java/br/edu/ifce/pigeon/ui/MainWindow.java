@@ -43,7 +43,7 @@ public class MainWindow implements IMainWindow {
         transition = new HamburgerSlideCloseTransition(hamburgerBtn);
 
         transition.setRate(-1);
-        imageView.setLayoutY(200);
+        imageView.setLayoutY(100);
         navigationDrawer.setSidePane(menu);
         hamburgerBtn.setOnMouseClicked(e -> presenter.onClickMenuBtn());
         hirePigeonBtn.setOnMouseClicked(e -> presenter.onClickHirePigeonBtn());
@@ -113,7 +113,7 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void setPigeonPosition(float position) {
-        this.imageView.setLayoutX(50 + position * 500);
+        this.imageView.setLayoutX(75 + position * 550);
     }
 
     @Override

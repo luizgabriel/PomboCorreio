@@ -17,6 +17,11 @@
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="471.0" prefWidth="800.0">
          <children>
+            <ImageView fitHeight="632.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/scenario/resized_scenario.png" />
+               </image>
+            </ImageView>
             <ImageView id="image-view-pigeon" fitHeight="114.0" fitWidth="127.0" layoutX="322.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
             <JFXDrawer id="navigation-drawer" defaultDrawerSize="220.0" overLayVisible="false" prefHeight="600.0" prefWidth="220.0" resizableOnDrag="true" />
             <JFXHamburger id="menu-btn" alignment="TOP_RIGHT" layoutX="754.0" layoutY="14.0" prefHeight="22.0" prefWidth="32.0" />
