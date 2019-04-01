@@ -1,28 +1,36 @@
 package br.edu.ifce.pigeon.ui;
 
+import br.edu.ifce.pigeon.models.User;
 import br.edu.ifce.pigeon.presenters.MainPresenter;
 import br.edu.ifce.pigeon.views.IMainWindow;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
+import javafx.scene.layout.HBox;
+import javafx.util.Pair;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainWindow implements IMainWindow {
     private final Parent root = Component.load("main_screen.fxml");
     private final MainPresenter presenter = new MainPresenter(this);
 
     //Pigeon Frames
-    private final ArrayList<Image> left = new ArrayList<>();
-    private final ArrayList<Image> right = new ArrayList<>();
+    private final List<Image> left = new ArrayList<>();
+    private final List<Image> right = new ArrayList<>();
+
+    private final Map<Integer, Pair<Integer, UserItem>> usersItems = new HashMap<>();
 
     //Components
     private final ImageView imageView;
@@ -30,20 +38,25 @@ public class MainWindow implements IMainWindow {
     private final HamburgerSlideCloseTransition transition;
     private final JFXButton hirePigeonBtn;
     private final JFXButton firePigeonBtn;
+    private final HBox usersBox;
 
     public MainWindow() throws IOException {
         Parent menu = Component.load("navigation_menu.fxml");
 
         JFXHamburger hamburgerBtn = (JFXHamburger) root.lookup("#menu-btn");
         JFXButton addUserBtn = (JFXButton) menu.lookup("#add-user-btn");
+        ScrollPane usersScroll = (ScrollPane) root.lookup("#usersScroll");
+
         imageView = (ImageView) root.lookup("#image-view-pigeon");
         navigationDrawer = (JFXDrawer) root.lookup("#navigation-drawer");
         hirePigeonBtn = (JFXButton) menu.lookup("#hire-pigeon-btn");
         firePigeonBtn = (JFXButton) menu.lookup("#fire-pigeon-btn");
         transition = new HamburgerSlideCloseTransition(hamburgerBtn);
+        usersBox = new HBox();
 
         transition.setRate(-1);
         imageView.setLayoutY(100);
+        usersScroll.setContent(usersBox);
         navigationDrawer.setSidePane(menu);
         hamburgerBtn.setOnMouseClicked(e -> presenter.onClickMenuBtn());
         hirePigeonBtn.setOnMouseClicked(e -> presenter.onClickHirePigeonBtn());
@@ -124,6 +137,30 @@ public class MainWindow implements IMainWindow {
     @Override
     public void setFirePigeonDisable(boolean disabled) {
         this.firePigeonBtn.setDisable(disabled);
+    }
+
+    @Override
+    public void addUser(int userId) {
+        try {
+            UserItem item = new UserItem(userId);
+            int index = usersItems.size();
+
+            usersItems.put(userId, new Pair<>(index, item));
+            usersBox.getChildren().add(index, item.getRoot());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void removeUser(int userId) {
+        Pair<Integer, UserItem> item = usersItems.remove(userId);
+        usersBox.getChildren().remove((int) item.getKey());
+    }
+
+    @Override
+    public void updateUserStatus(int userId, User.Status status, float progress) {
+        usersItems.get(userId).getValue().onStatusRefreshed(status, progress);
     }
 
     public Parent getRoot() {

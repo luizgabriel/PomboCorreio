@@ -9,7 +9,7 @@ public abstract class CreatePresenter extends BasePresenter<ICreateView> {
     }
 
     @Override
-    void onLoadView() {
+    public void onLoadView() {
 
     }
 

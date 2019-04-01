@@ -11,8 +11,8 @@ import java.util.function.Consumer;
 public class MailBox implements Iterable<Mail> {
     private BlockingQueue<Mail> queue;
     private PigeonThread pigeonThread;
-    public static Semaphore mainBox;
-    public static Semaphore mutex;
+    private  Semaphore mainBox;
+    private  Semaphore mutex;
 
     public MailBox(int capacity) {
         mutex = new Semaphore(1);

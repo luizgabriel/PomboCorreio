@@ -20,9 +20,16 @@ public class User {
         return id;
     }
 
-    public int getWriteTime(){return writeTime;}
-
     public int getImage() {
         return image;
+    }
+
+    public int getWriteTime() {
+        return writeTime;
+    }
+
+    public enum Status {
+        SLEEPING,
+        WRITING
     }
 }

@@ -1,23 +1,23 @@
 package br.edu.ifce.pigeon.jobs;
 
 import br.edu.ifce.pigeon.models.MailBox;
-import br.edu.ifce.pigeon.views.IPigeonController;
+import br.edu.ifce.pigeon.views.IPigeonListener;
 
 import java.util.concurrent.Semaphore;
 
-import static br.edu.ifce.pigeon.views.IPigeonController.AnimState.*;
+import static br.edu.ifce.pigeon.views.IPigeonListener.AnimState.*;
 
 public class PigeonThread extends Thread {
-    private final IPigeonController view;
+    private final IPigeonListener view;
     private final MailBox mailBox;
     private int max_capacity;
     private int load_time;
     private int unload_time;
     private int flight_time;
     private boolean alive;
-    public static Semaphore semaphore_pigeon;
+    public Semaphore semaphore_pigeon;
 
-    public PigeonThread(IPigeonController view, MailBox mailBox) {
+    public PigeonThread(IPigeonListener view, MailBox mailBox) {
         this.view = view;
         this.mailBox = mailBox;
         this.alive = true;
@@ -28,7 +28,8 @@ public class PigeonThread extends Thread {
         this.load_time = load_time * 1000;
         this.unload_time = unload_time * 1000;
         this.flight_time = flight_time * 1000;
-        this.view.refreshPigeonFrame(IPigeonController.AnimState.LOADING);
+        this.view.onChangeState(IPigeonListener.AnimState.LOADING);
+        this.semaphore_pigeon = new Semaphore(0);
 
         this.start();
     }
@@ -42,12 +43,12 @@ public class PigeonThread extends Thread {
         while (this.alive) {
             try {
                 if (mailBox.getCount() < getMaxCapacity()) {
-                    view.refreshPigeonFrame(LOADING);
-                    view.setPigeonPosition(1);
+
+                    view.onChangeState(LOADING);
+                    view.onChangePosition(1);
                     System.out.println("Dormindo");
-                    try {
-                        this.semaphore_pigeon.acquire();
-                    }catch (NullPointerException e){}
+                    semaphore_pigeon.acquire();
+
                 }
                 //mailBox.mutex.acquire();
                 loadBox();
@@ -68,8 +69,8 @@ public class PigeonThread extends Thread {
         while (this.alive && (elapsed < load_time)) {
             elapsed += 80;
 
-            view.refreshPigeonFrame(LOADING);
-            view.setPigeonPosition(1);
+            view.onChangeState(LOADING);
+            view.onChangePosition(1);
             try {
                 Thread.sleep(80);
             } catch (InterruptedException e) {
@@ -85,8 +86,8 @@ public class PigeonThread extends Thread {
         int elapsed = 0;
 
         while (this.alive && (elapsed < unload_time)) {
-            this.view.refreshPigeonFrame(UNLOADING);
-            this.view.setPigeonPosition(1);
+            this.view.onChangeState(UNLOADING);
+            this.view.onChangePosition(1);
             elapsed += 80;
 
             try {
@@ -97,12 +98,12 @@ public class PigeonThread extends Thread {
         }
     }
 
-    private void fly(IPigeonController.AnimState anim) {
+    private void fly(IPigeonListener.AnimState anim) {
         int elapsed = 0;
 
         while (this.alive && (elapsed < flight_time)) {
-            view.refreshPigeonFrame(anim);
-            view.setPigeonPosition(elapsed / ((float) flight_time));
+            view.onChangeState(anim);
+            view.onChangePosition(elapsed / ((float) flight_time));
             elapsed += 80;
 
             try {

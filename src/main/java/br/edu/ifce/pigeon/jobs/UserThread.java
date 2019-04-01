@@ -30,12 +30,31 @@ public class UserThread extends Thread {
                 //mailBox.mutex.acquire();
                 this.mailBox.put(new Mail(this.user));
                 //mailBox.mutex.release();
-                Thread.sleep(this.user.getWriteTime() * 1000);
+                write();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    private void write() throws InterruptedException {
+        int elapsed = 0;
+        int writeTime = user.getWriteTime() * 1000;
+        while (this.alive && (elapsed < writeTime)) {
+            //view.onChangeState(anim);
+            //view.onChangePosition(elapsed / ((float) writeTime));
+            elapsed += 80;
+
+            try {
+                Thread.sleep(80);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public User getUser() {
+        return this.user;
+    }
 }
 
