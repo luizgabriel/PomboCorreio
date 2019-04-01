@@ -2,6 +2,7 @@ package br.edu.ifce.pigeon.navigation;
 
 import br.edu.ifce.pigeon.ui.Component;
 import br.edu.ifce.pigeon.ui.CreatePigeonWindow;
+import br.edu.ifce.pigeon.ui.CreateUserWindow;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -33,8 +34,10 @@ public class JavaFXNavigation implements INavigation {
     public void openCreateUser() {
         try {
             Stage stage = new Stage();
-            stage.setScene(new Scene(Component.load("create_user.fxml")));
-            stage.setTitle("Adicionar pombo");
+            CreateUserWindow window = new CreateUserWindow();
+
+            stage.setScene(new Scene(window.getRoot()));
+            stage.setTitle("Adicionar usuário");
             stage.setResizable(false);
             stage.setIconified(false);
             stage.show();

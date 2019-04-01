@@ -114,7 +114,6 @@ public class MainWindow implements IMainWindow {
     @Override
     public void setPigeonPosition(float position) {
         this.imageView.setLayoutX(50 + position * 500);
-        System.out.println(50 + position * 500);
     }
 
     @Override

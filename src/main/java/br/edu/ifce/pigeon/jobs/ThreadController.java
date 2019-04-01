@@ -56,12 +56,10 @@ public class ThreadController {
         }
     }
 
-    public User initUserThread(int writeTime) {
+    public void addUserThread(int writeTime) {
         User user = new User(writeTime);
         UserThread thread = new UserThread(this.mailBox, user);
         this.userThreads.put(user.getId(), thread);
-
-        return user;
     }
 
     public void fireUser(User user) {

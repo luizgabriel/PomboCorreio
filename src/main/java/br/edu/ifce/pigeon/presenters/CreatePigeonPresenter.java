@@ -1,9 +1,9 @@
 package br.edu.ifce.pigeon.presenters;
 
 import br.edu.ifce.pigeon.jobs.ThreadController;
-import br.edu.ifce.pigeon.views.ICreatePigeonView;
+import br.edu.ifce.pigeon.views.ICreateView;
 
-public class CreatePigeonPresenter extends BasePresenter<ICreatePigeonView> {
+public class CreatePigeonPresenter extends CreatePresenter {
     private final ThreadController controller = ThreadController.getInstance();
 
     private int capacity;
@@ -11,18 +11,17 @@ public class CreatePigeonPresenter extends BasePresenter<ICreatePigeonView> {
     private int unloadTime;
     private int travelTime;
 
-    public CreatePigeonPresenter(ICreatePigeonView view) {
+    public CreatePigeonPresenter(ICreateView view) {
         super(view);
     }
 
-    public void onClickSaveBtn() {
-        if (!validate()) return;
-
+    @Override
+    public void onSave() {
         this.controller.initPigeonThread(capacity, loadTime, unloadTime, travelTime);
-        getView().close();
     }
 
-    private boolean validate() {
+    @Override
+    protected boolean validate() {
         if (capacity <= 0) {
             getView().showError("capacidade inválida!");
             return false;
@@ -46,11 +45,6 @@ public class CreatePigeonPresenter extends BasePresenter<ICreatePigeonView> {
         return true;
     }
 
-    @Override
-    void onLoadView() {
-
-    }
-
     public void onTypeCapacity(String text) {
         capacity = parseInput(text);
     }
@@ -66,14 +60,5 @@ public class CreatePigeonPresenter extends BasePresenter<ICreatePigeonView> {
     public void onTypeTravelTime(String text) {
         travelTime = parseInput(text);
     }
-
-    private int parseInput(String text) {
-        try {
-            return Integer.parseInt(text);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
-
 
 }

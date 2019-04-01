@@ -1,6 +1,7 @@
 package br.edu.ifce.pigeon.ui;
 
 import br.edu.ifce.pigeon.presenters.CreatePigeonPresenter;
+import br.edu.ifce.pigeon.presenters.CreateUserPresenter;
 import br.edu.ifce.pigeon.views.ICreateView;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSnackbar;
@@ -13,23 +14,17 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class CreatePigeonWindow implements ICreateView {
-    private Parent root = Component.load("create_pigeon.fxml");
-    private final CreatePigeonPresenter presenter = new CreatePigeonPresenter(this);
+public class CreateUserWindow implements ICreateView {
+    private Parent root = Component.load("create_user.fxml");
+    private final CreateUserPresenter presenter = new CreateUserPresenter(this);
     private final JFXSnackbar bar;
 
-    public CreatePigeonWindow() throws IOException {
-        JFXTextField capacityTxtField = (JFXTextField) root.lookup("#capacityTxtField");
-        JFXTextField loadTimeTxtField = (JFXTextField) root.lookup("#loadTimeTxtField");
-        JFXTextField unloadTimeTxtField = (JFXTextField) root.lookup("#unloadTimeTxtField");
-        JFXTextField travelTimeTxtField = (JFXTextField) root.lookup("#travelTimeTxtField");
+    public CreateUserWindow() throws IOException {
+        JFXTextField writeTimeTxtField = (JFXTextField) root.lookup("#writeTimeTxtField");
         bar = new JFXSnackbar((Pane) root.lookup("#rootPane"));
 
         JFXButton saveBtn = (JFXButton) root.lookup("#saveBtn");
-        capacityTxtField.setOnKeyReleased(e -> presenter.onTypeCapacity(capacityTxtField.getText()));
-        loadTimeTxtField.setOnKeyReleased(e -> presenter.onTypeLoadTime(loadTimeTxtField.getText()));
-        unloadTimeTxtField.setOnKeyReleased(e -> presenter.onTypeUnloadTime(unloadTimeTxtField.getText()));
-        travelTimeTxtField.setOnKeyReleased(e -> presenter.onTypeTravelTime(travelTimeTxtField.getText()));
+        writeTimeTxtField.setOnKeyReleased(e -> presenter.onTypeWriteTime(writeTimeTxtField.getText()));
 
         saveBtn.setOnMouseClicked(e -> presenter.onClickSaveBtn());
     }
