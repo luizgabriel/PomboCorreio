@@ -8,7 +8,7 @@ public class User {
     private int writeTime;
 
     private static int currentImage = 0;
-    private static final int MAX_IMAGES = 5;
+    private static final int MAX_IMAGES = 13;
 
     public User(int writeTime) {
         this.writeTime = writeTime;

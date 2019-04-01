@@ -78,6 +78,7 @@ public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeon
     public void disablePigeonCreation() {
         getView().setHirePigeonDisable(true);
         getView().setFirePigeonDisable(false);
+        getView().toggleMenu();
     }
 
     public void onClickAddUserBtn() {
