@@ -24,7 +24,7 @@ public class CreateUserWindow implements ICreateView {
         bar = new JFXSnackbar((Pane) root.lookup("#rootPane"));
 
         JFXButton saveBtn = (JFXButton) root.lookup("#saveBtn");
-        writeTimeTxtField.setOnKeyReleased(e -> presenter.onTypeWriteTime(writeTimeTxtField.getText()));
+        writeTimeTxtField.setOnKeyPressed(e -> presenter.onTypeWriteTime(writeTimeTxtField.getText()));
 
         saveBtn.setOnMouseClicked(e -> presenter.onClickSaveBtn());
     }
