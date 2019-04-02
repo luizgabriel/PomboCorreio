@@ -6,10 +6,16 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.awt.image.BufferedImage;
@@ -30,17 +36,28 @@ public class MainWindow implements IMainWindow {
     private final HamburgerSlideCloseTransition transition;
     private final JFXButton hirePigeonBtn;
     private final JFXButton firePigeonBtn;
+    private final ScrollPane scrollUsers;
 
     public MainWindow() throws IOException {
         Parent menu = Component.load("navigation_menu.fxml");
 
         JFXHamburger hamburgerBtn = (JFXHamburger) root.lookup("#menu-btn");
         JFXButton addUserBtn = (JFXButton) menu.lookup("#add-user-btn");
+
+        scrollUsers = (ScrollPane) root.lookup("#scroll_users");    //  TESTE
+        HBox boxUsers = new HBox();    //  TESTE
+        boxUsers.setSpacing(20);
+        boxUsers.getChildren().addAll(Component.load("image_users.fxml"),Component.load("image_users.fxml"),Component.load("image_users.fxml"),
+                Component.load("image_users.fxml"),Component.load("image_users.fxml"),Component.load("image_users.fxml"));    //  TESTE
+        scrollUsers.setContent(boxUsers);    //  TESTE
+
         imageView = (ImageView) root.lookup("#image-view-pigeon");
         navigationDrawer = (JFXDrawer) root.lookup("#navigation-drawer");
         hirePigeonBtn = (JFXButton) menu.lookup("#hire-pigeon-btn");
         firePigeonBtn = (JFXButton) menu.lookup("#fire-pigeon-btn");
         transition = new HamburgerSlideCloseTransition(hamburgerBtn);
+
+
 
         transition.setRate(-1);
         imageView.setLayoutY(100);
