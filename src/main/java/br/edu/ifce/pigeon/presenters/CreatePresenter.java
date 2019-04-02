@@ -2,6 +2,8 @@ package br.edu.ifce.pigeon.presenters;
 
 import br.edu.ifce.pigeon.views.ICreateView;
 
+import java.io.IOException;
+
 public abstract class CreatePresenter extends BasePresenter<ICreateView> {
 
     public CreatePresenter(ICreateView view) {
@@ -13,7 +15,7 @@ public abstract class CreatePresenter extends BasePresenter<ICreateView> {
 
     }
 
-    public void onClickSaveBtn() {
+    public void onClickSaveBtn() throws IOException {
         if (!validate()) return;
 
         onSave();
@@ -21,7 +23,7 @@ public abstract class CreatePresenter extends BasePresenter<ICreateView> {
     }
 
     protected abstract boolean validate();
-    public abstract void onSave();
+    public abstract void onSave() throws IOException;
 
     protected int parseInput(String text) {
         try {

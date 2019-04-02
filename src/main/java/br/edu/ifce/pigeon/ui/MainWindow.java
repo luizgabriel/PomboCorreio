@@ -16,10 +16,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class MainWindow implements IMainWindow {
     private final Parent root = Component.load("main_screen.fxml");
@@ -36,6 +39,8 @@ public class MainWindow implements IMainWindow {
     private final JFXButton hirePigeonBtn;
     private final JFXButton firePigeonBtn;
     private final ScrollPane scrollUsers;
+    public  static ArrayList<Parent> users = new ArrayList<>();
+    public static HBox boxUsers = new HBox();
 
     public MainWindow() throws IOException {
         Parent menu = Component.load("navigation_menu.fxml");
@@ -43,12 +48,20 @@ public class MainWindow implements IMainWindow {
         JFXHamburger hamburgerBtn = (JFXHamburger) root.lookup("#menu-btn");
         JFXButton addUserBtn = (JFXButton) menu.lookup("#add-user-btn");
 
-        scrollUsers = (ScrollPane) root.lookup("#scroll_users");    //  TESTE
-        HBox boxUsers = new HBox();    //  TESTE
+        //========= teste =========================
+
+        scrollUsers = (ScrollPane) root.lookup("#scroll_users");
         boxUsers.setSpacing(20);
-        boxUsers.getChildren().addAll(Component.load("image_users.fxml"),Component.load("image_users.fxml"),Component.load("image_users.fxml"),
-                Component.load("image_users.fxml"),Component.load("image_users.fxml"),Component.load("image_users.fxml"));    //  TESTE
-        scrollUsers.setContent(boxUsers);    //  TESTE
+        users.add(Component.load("image_users.fxml"));
+        boxUsers.getChildren().addAll(users);
+
+        //boxUsers.getChildren().addAll(Component.load("image_users.fxml"),Component.load("image_users.fxml"),Component.load("image_users.fxml"),Component.load("image_users.fxml"),Component.load("image_users.fxml"),Component.load("image_users.fxml"));    //  TESTE
+        scrollUsers.setContent(boxUsers);
+        users.add(Component.load("image_users.fxml"));
+        boxUsers.getChildren().add(new Button("adsfdasgadsgfafg"));
+
+        //========= teste =========================
+
 
         imageView = (ImageView) root.lookup("#image-view-pigeon");
         navigationDrawer = (JFXDrawer) root.lookup("#navigation-drawer");

@@ -26,7 +26,13 @@ public class CreateUserWindow implements ICreateView {
         JFXButton saveBtn = (JFXButton) root.lookup("#saveBtn");
         writeTimeTxtField.setOnKeyPressed(e -> presenter.onTypeWriteTime(writeTimeTxtField.getText()));
 
-        saveBtn.setOnMouseClicked(e -> presenter.onClickSaveBtn());
+        saveBtn.setOnMouseClicked(e -> {
+            try {
+                presenter.onClickSaveBtn();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
     }
 
     @Override

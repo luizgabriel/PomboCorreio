@@ -32,7 +32,11 @@ public class CreatePigeonWindow implements ICreateView {
             presenter.onTypeLoadTime(loadTimeTxtField.getText());
             presenter.onTypeUnloadTime(unloadTimeTxtField.getText());
             presenter.onTypeTravelTime(travelTimeTxtField.getText());
-            presenter.onClickSaveBtn();
+            try {
+                presenter.onClickSaveBtn();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         });
     }
 
