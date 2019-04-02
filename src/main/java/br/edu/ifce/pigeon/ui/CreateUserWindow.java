@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class CreateUserWindow implements ICreateView {
@@ -26,7 +27,13 @@ public class CreateUserWindow implements ICreateView {
         JFXButton saveBtn = (JFXButton) root.lookup("#saveBtn");
         writeTimeTxtField.setOnKeyReleased(e -> presenter.onTypeWriteTime(writeTimeTxtField.getText()));
 
-        saveBtn.setOnMouseClicked(e -> presenter.onClickSaveBtn());
+        saveBtn.setOnMouseClicked(e -> {
+            try {
+                presenter.onClickSaveBtn();
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+        });
     }
 
     @Override

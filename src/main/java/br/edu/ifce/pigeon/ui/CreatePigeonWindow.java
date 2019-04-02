@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class CreatePigeonWindow implements ICreateView {
@@ -31,7 +32,13 @@ public class CreatePigeonWindow implements ICreateView {
         unloadTimeTxtField.setOnKeyReleased(e -> presenter.onTypeUnloadTime(unloadTimeTxtField.getText()));
         travelTimeTxtField.setOnKeyReleased(e -> presenter.onTypeTravelTime(travelTimeTxtField.getText()));
 
-        saveBtn.setOnMouseClicked(e -> presenter.onClickSaveBtn());
+        saveBtn.setOnMouseClicked(e -> {
+            try {
+                presenter.onClickSaveBtn();
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+        });
     }
 
     @Override

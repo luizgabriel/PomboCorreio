@@ -3,6 +3,8 @@ package br.edu.ifce.pigeon.presenters;
 import br.edu.ifce.pigeon.jobs.ThreadController;
 import br.edu.ifce.pigeon.views.ICreateView;
 
+import java.io.FileNotFoundException;
+
 public class CreateUserPresenter extends CreatePresenter {
 
     private final ThreadController controller = ThreadController.getInstance();
@@ -24,7 +26,7 @@ public class CreateUserPresenter extends CreatePresenter {
     }
 
     @Override
-    public void onSave() {
+    public void onSave() throws FileNotFoundException {
         controller.addUserThread(writeTime);
     }
 

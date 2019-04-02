@@ -10,10 +10,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class MainWindow implements IMainWindow {
@@ -30,6 +33,7 @@ public class MainWindow implements IMainWindow {
     private final HamburgerSlideCloseTransition transition;
     private final JFXButton hirePigeonBtn;
     private final JFXButton firePigeonBtn;
+    public static GridPane gridPaneUsers;
 
     public MainWindow() throws IOException {
         Parent menu = Component.load("navigation_menu.fxml");
@@ -41,6 +45,24 @@ public class MainWindow implements IMainWindow {
         hirePigeonBtn = (JFXButton) menu.lookup("#hire-pigeon-btn");
         firePigeonBtn = (JFXButton) menu.lookup("#fire-pigeon-btn");
         transition = new HamburgerSlideCloseTransition(hamburgerBtn);
+
+        //=================     testando ==============================
+
+        gridPaneUsers = (GridPane) root.lookup("#users-grid");
+//        InputStream file = new FileInputStream(String.format("C:\\Users\\Mateus\\Documents\\Mateus\\PomboCorreio1\\src\\main\\resources\\img\\user\\user_tipo0%d.png", 4));
+//        Image user = new Image(file);
+//        ImageView view = new ImageView(user);
+//        ImageView view1 = new ImageView(user);
+//        view.setFitHeight(100);
+//        view.setFitWidth(100);
+//
+//        view1.setFitHeight(100);
+//        view1.setFitWidth(100);
+//
+//        gridPaneUsers.add(view, 0 , 0);
+//        gridPaneUsers.add(view1, 1 , 0);
+
+
 
         transition.setRate(-1);
         imageView.setLayoutY(200);
