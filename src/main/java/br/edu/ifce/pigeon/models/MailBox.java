@@ -11,10 +11,12 @@ import java.util.function.Consumer;
 public class MailBox implements Iterable<Mail> {
     private BlockingQueue<Mail> queue;
     private PigeonThread pigeonThread;
-    private Semaphore mutex;
+    public static Semaphore mainBox;
+    public static Semaphore mutex;
 
     public MailBox(int capacity) {
-        mutex = new Semaphore(capacity);
+        mutex = new Semaphore(1);
+        mainBox = new Semaphore(capacity);
         queue = new LinkedBlockingQueue<>();
     }
 
@@ -28,17 +30,19 @@ public class MailBox implements Iterable<Mail> {
                 this.pigeonThread.wakeUp();
             }
 
-            mutex.acquire();
+            mainBox.acquire();
             queue.put(m);
+            System.out.println(queue.size() + " - put -" + m.getUser().getId());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     public Mail take() {
-        mutex.release();
+        mainBox.release();
         try {
-            return queue.take();
+            queue.take();
+            System.out.println(getCount() + " - take");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

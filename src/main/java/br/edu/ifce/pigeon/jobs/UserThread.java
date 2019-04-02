@@ -11,7 +11,7 @@ public class UserThread extends Thread {
     private final MailBox mailBox;
     private boolean alive;
 
-    private static Semaphore mutex = new Semaphore(1);
+    //private static Semaphore mutex = new Semaphore(1);
 
     public UserThread(MailBox mailBox, User user) {
         this.user = user;
@@ -27,13 +27,10 @@ public class UserThread extends Thread {
     public void run() {
         while (this.alive) {
             try {
-                mutex.acquire();
-                // num_mail++
+                //mailBox.mutex.acquire();
                 this.mailBox.put(new Mail(this.user));
-                // if (num_mail % N == 0){
-                //    mutex.release();
-                ///}
-                mutex.release();
+                //mailBox.mutex.release();
+                Thread.sleep(this.user.getWriteTime() * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

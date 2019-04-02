@@ -15,9 +15,7 @@ public class PigeonThread extends Thread {
     private int unload_time;
     private int flight_time;
     private boolean alive;
-
-    private Semaphore semaphore_pigeon;
-    private Semaphore mutex;
+    public static Semaphore semaphore_pigeon;
 
     public PigeonThread(IPigeonController view, MailBox mailBox) {
         this.view = view;
@@ -26,9 +24,6 @@ public class PigeonThread extends Thread {
     }
 
     public void init(int max_capacity, int load_time, int unload_time, int flight_time) {
-        this.semaphore_pigeon = new Semaphore(0);
-        this.mutex = new Semaphore(1);
-
         this.max_capacity = max_capacity;
         this.load_time = load_time * 1000;
         this.unload_time = unload_time * 1000;
@@ -49,13 +44,14 @@ public class PigeonThread extends Thread {
                 if (mailBox.getCount() < getMaxCapacity()) {
                     view.refreshPigeonFrame(LOADING);
                     view.setPigeonPosition(1);
-                    semaphore_pigeon.acquire();
+                    System.out.println("Dormindo");
+                    try {
+                        this.semaphore_pigeon.acquire();
+                    }catch (NullPointerException e){}
                 }
-                mutex.acquire();
-
+                //mailBox.mutex.acquire();
                 loadBox();
-
-                mutex.release();
+                //mailBox.mutex.release();
                 fly(TRAVEL_LEFT_TO_RIGHT);
                 unload_box();
                 fly(TRAVEL_RIGHT_TO_LEFT);
@@ -69,7 +65,7 @@ public class PigeonThread extends Thread {
     private void loadBox() {
         long elapsed = 0;
 
-        while (this.alive && (elapsed < unload_time)) {
+        while (this.alive && (elapsed < load_time)) {
             elapsed += 80;
 
             view.refreshPigeonFrame(LOADING);

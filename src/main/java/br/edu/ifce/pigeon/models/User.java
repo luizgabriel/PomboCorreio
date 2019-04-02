@@ -20,6 +20,8 @@ public class User {
         return id;
     }
 
+    public int getWriteTime(){return writeTime;}
+
     public int getImage() {
         return image;
     }

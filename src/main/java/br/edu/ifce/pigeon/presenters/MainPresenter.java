@@ -24,17 +24,7 @@ public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeon
         getView().loadPigeonFrames(MAX_PIGEON_FRAMES);
 
         this.controller.setPigeonController(this);
-        this.controller.initMailBox(10);
-
-        User u = new User(10);
-        this.controller.getMailBox().put(new Mail(u));
-        this.controller.getMailBox().put(new Mail(u));
-        this.controller.getMailBox().put(new Mail(u));
-        this.controller.getMailBox().put(new Mail(u));
-        this.controller.getMailBox().put(new Mail(u));
-        this.controller.getMailBox().put(new Mail(u));
-        this.controller.getMailBox().put(new Mail(u));
-        this.controller.getMailBox().put(new Mail(u));
+        this.controller.initMailBox(20);
     }
 
     @Override
