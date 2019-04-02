@@ -59,6 +59,7 @@ public class ThreadController {
     public void addUserThread(int writeTime) {
         User user = new User(writeTime);
         UserThread thread = new UserThread(this.mailBox, user);
+        thread.start();
         this.userThreads.put(user.getId(), thread);
     }
 
