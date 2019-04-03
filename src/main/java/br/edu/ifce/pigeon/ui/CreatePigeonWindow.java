@@ -27,18 +27,25 @@ public class CreatePigeonWindow implements ICreateView {
         bar = new JFXSnackbar((Pane) root.lookup("#rootPane"));
 
         JFXButton saveBtn = (JFXButton) root.lookup("#saveBtn");
-        capacityTxtField.setOnKeyReleased(e -> presenter.onTypeCapacity(capacityTxtField.getText()));
-        loadTimeTxtField.setOnKeyReleased(e -> presenter.onTypeLoadTime(loadTimeTxtField.getText()));
-        unloadTimeTxtField.setOnKeyReleased(e -> presenter.onTypeUnloadTime(unloadTimeTxtField.getText()));
-        travelTimeTxtField.setOnKeyReleased(e -> presenter.onTypeTravelTime(travelTimeTxtField.getText()));
 
         saveBtn.setOnMouseClicked(e -> {
+<<<<<<< HEAD
             try {
                 presenter.onClickSaveBtn();
             } catch (FileNotFoundException e1) {
                 e1.printStackTrace();
             }
         });
+=======
+            presenter.onTypeCapacity(capacityTxtField.getText());
+            presenter.onTypeLoadTime(loadTimeTxtField.getText());
+            presenter.onTypeUnloadTime(unloadTimeTxtField.getText());
+            presenter.onTypeTravelTime(travelTimeTxtField.getText());
+            presenter.onClickSaveBtn();
+        });
+
+        presenter.onLoadView();
+>>>>>>> ffbf314c1439d71a805c1562192e07001fb850ad
     }
 
     @Override

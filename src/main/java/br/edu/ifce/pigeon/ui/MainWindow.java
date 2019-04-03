@@ -1,51 +1,72 @@
 package br.edu.ifce.pigeon.ui;
 
+import br.edu.ifce.pigeon.models.User;
 import br.edu.ifce.pigeon.presenters.MainPresenter;
 import br.edu.ifce.pigeon.views.IMainWindow;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import javafx.application.Platform;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+<<<<<<< HEAD
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+=======
+import javafx.scene.layout.HBox;
+import javafx.util.Pair;
+>>>>>>> ffbf314c1439d71a805c1562192e07001fb850ad
 
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainWindow implements IMainWindow {
     private final Parent root = Component.load("main_screen.fxml");
     private final MainPresenter presenter = new MainPresenter(this);
 
     //Pigeon Frames
-    private final ArrayList<Image> left = new ArrayList<>();
-    private final ArrayList<Image> right = new ArrayList<>();
+    private final List<Image> left = new ArrayList<>();
+    private final List<Image> right = new ArrayList<>();
+
+    private final Map<Integer, UserItem> usersItems = new HashMap<>();
 
     //Components
     private final ImageView imageView;
     private final JFXDrawer navigationDrawer;
-    private final HamburgerSlideCloseTransition transition;
     private final JFXButton hirePigeonBtn;
     private final JFXButton firePigeonBtn;
+<<<<<<< HEAD
     public static GridPane gridPaneUsers;
+=======
+    private final HBox usersBox;
+    private final Label mailCountLabel;
+>>>>>>> ffbf314c1439d71a805c1562192e07001fb850ad
 
     public MainWindow() throws IOException {
         Parent menu = Component.load("navigation_menu.fxml");
 
         JFXHamburger hamburgerBtn = (JFXHamburger) root.lookup("#menu-btn");
         JFXButton addUserBtn = (JFXButton) menu.lookup("#add-user-btn");
+        ScrollPane usersScroll = (ScrollPane) root.lookup("#usersScroll");
+
         imageView = (ImageView) root.lookup("#image-view-pigeon");
         navigationDrawer = (JFXDrawer) root.lookup("#navigation-drawer");
         hirePigeonBtn = (JFXButton) menu.lookup("#hire-pigeon-btn");
         firePigeonBtn = (JFXButton) menu.lookup("#fire-pigeon-btn");
-        transition = new HamburgerSlideCloseTransition(hamburgerBtn);
+        mailCountLabel = (Label) root.lookup("#mailCountLabel");
+        usersBox = new HBox();
 
+<<<<<<< HEAD
         //=================     testando ==============================
 
         gridPaneUsers = (GridPane) root.lookup("#users-grid");
@@ -66,6 +87,10 @@ public class MainWindow implements IMainWindow {
 
         transition.setRate(-1);
         imageView.setLayoutY(200);
+=======
+        imageView.setLayoutY(100);
+        usersScroll.setContent(usersBox);
+>>>>>>> ffbf314c1439d71a805c1562192e07001fb850ad
         navigationDrawer.setSidePane(menu);
         hamburgerBtn.setOnMouseClicked(e -> presenter.onClickMenuBtn());
         hirePigeonBtn.setOnMouseClicked(e -> presenter.onClickHirePigeonBtn());
@@ -77,9 +102,6 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void toggleMenu() {
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
-
         if (navigationDrawer.isClosed()) {
             navigationDrawer.open();
         } else {
@@ -135,7 +157,7 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void setPigeonPosition(float position) {
-        this.imageView.setLayoutX(50 + position * 500);
+        this.imageView.setLayoutX(75 + position * 550);
     }
 
     @Override
@@ -146,6 +168,49 @@ public class MainWindow implements IMainWindow {
     @Override
     public void setFirePigeonDisable(boolean disabled) {
         this.firePigeonBtn.setDisable(disabled);
+    }
+
+    @Override
+    public void addUser(int userId) {
+        try {
+            UserItem item = new UserItem(userId);
+
+            usersItems.put(userId, item);
+            usersBox.getChildren().add(item.getRoot());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void removeUser(int userId) {
+        UserItem item = usersItems.remove(userId);
+        usersBox.getChildren().remove(item.getRoot());
+    }
+
+    @Override
+    public void updateUserStatus(int userId, User.Status status, float progress) {
+        Platform.runLater(() -> {
+            UserItem item = usersItems.get(userId);
+            if (item != null) {
+                item.onStatusRefreshed(status, progress);
+            }
+        });
+    }
+
+    @Override
+    public void setMailCount(int current, int max) {
+        Platform.runLater(() -> mailCountLabel.setText(String.format("%d/%d", current, max)));
+    }
+
+    @Override
+    public void askMailBoxCapacity() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Caixa de Correio");
+        dialog.setHeaderText("Informe a capacidade máxima da caixa de correio:");
+        dialog.setContentText("Capacidade:");
+
+        presenter.onSetMailBoxCapacity(dialog.showAndWait().orElse("0"));
     }
 
     public Parent getRoot() {

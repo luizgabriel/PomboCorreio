@@ -11,7 +11,7 @@ public abstract class CreatePresenter extends BasePresenter<ICreateView> {
     }
 
     @Override
-    void onLoadView() {
+    public void onLoadView() {
 
     }
 
@@ -23,7 +23,7 @@ public abstract class CreatePresenter extends BasePresenter<ICreateView> {
     }
 
     protected abstract boolean validate();
-    public abstract void onSave() throws FileNotFoundException;
+    public abstract void onSave();
 
     protected int parseInput(String text) {
         try {

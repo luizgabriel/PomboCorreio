@@ -1,39 +1,35 @@
 package br.edu.ifce.pigeon.jobs;
 
 import br.edu.ifce.pigeon.models.MailBox;
-import br.edu.ifce.pigeon.views.IPigeonController;
+import br.edu.ifce.pigeon.views.IPigeonListener;
 
 import java.util.concurrent.Semaphore;
 
-import static br.edu.ifce.pigeon.views.IPigeonController.AnimState.*;
+import static br.edu.ifce.pigeon.views.IPigeonListener.AnimState.*;
 
 public class PigeonThread extends Thread {
-    private final IPigeonController view;
+    private final IPigeonListener view;
     private final MailBox mailBox;
     private int max_capacity;
-    private int load_time;
-    private int unload_time;
-    private int flight_time;
+    private int loadTime;
+    private int unloadTime;
+    private int flightTime;
     private boolean alive;
+    private Semaphore semaphore;
 
-    private Semaphore semaphore_pigeon;
-    private Semaphore mutex;
-
-    public PigeonThread(IPigeonController view, MailBox mailBox) {
+    public PigeonThread(IPigeonListener view, MailBox mailBox) {
         this.view = view;
         this.mailBox = mailBox;
         this.alive = true;
     }
 
     public void init(int max_capacity, int load_time, int unload_time, int flight_time) {
-        this.semaphore_pigeon = new Semaphore(0);
-        this.mutex = new Semaphore(1);
-
         this.max_capacity = max_capacity;
-        this.load_time = load_time * 1000;
-        this.unload_time = unload_time * 1000;
-        this.flight_time = flight_time * 1000;
-        this.view.refreshPigeonFrame(IPigeonController.AnimState.LOADING);
+        this.loadTime = load_time * 1000;
+        this.unloadTime = unload_time * 1000;
+        this.flightTime = flight_time * 1000;
+        this.view.onChangeState(IPigeonListener.AnimState.LOADING);
+        this.semaphore = new Semaphore(0);
 
         this.start();
     }
@@ -47,15 +43,12 @@ public class PigeonThread extends Thread {
         while (this.alive) {
             try {
                 if (mailBox.getCount() < getMaxCapacity()) {
-                    view.refreshPigeonFrame(LOADING);
-                    view.setPigeonPosition(1);
-                    semaphore_pigeon.acquire();
+
+                    view.onChangeState(LOADING);
+                    view.onChangePosition(1);
+                    semaphore.acquire();
                 }
-                mutex.acquire();
-
                 loadBox();
-
-                mutex.release();
                 fly(TRAVEL_LEFT_TO_RIGHT);
                 unload_box();
                 fly(TRAVEL_RIGHT_TO_LEFT);
@@ -69,11 +62,11 @@ public class PigeonThread extends Thread {
     private void loadBox() {
         long elapsed = 0;
 
-        while (this.alive && (elapsed < unload_time)) {
+        while (this.alive && (elapsed < loadTime)) {
             elapsed += 80;
 
-            view.refreshPigeonFrame(LOADING);
-            view.setPigeonPosition(1);
+            view.onChangeState(LOADING);
+            view.onChangePosition(1);
             try {
                 Thread.sleep(80);
             } catch (InterruptedException e) {
@@ -88,9 +81,9 @@ public class PigeonThread extends Thread {
     private void unload_box() {
         int elapsed = 0;
 
-        while (this.alive && (elapsed < unload_time)) {
-            this.view.refreshPigeonFrame(UNLOADING);
-            this.view.setPigeonPosition(1);
+        while (this.alive && (elapsed < unloadTime)) {
+            this.view.onChangeState(UNLOADING);
+            this.view.onChangePosition(1);
             elapsed += 80;
 
             try {
@@ -101,12 +94,12 @@ public class PigeonThread extends Thread {
         }
     }
 
-    private void fly(IPigeonController.AnimState anim) {
+    private void fly(IPigeonListener.AnimState anim) {
         int elapsed = 0;
 
-        while (this.alive && (elapsed < flight_time)) {
-            view.refreshPigeonFrame(anim);
-            view.setPigeonPosition(elapsed / ((float) flight_time));
+        while (this.alive && (elapsed < flightTime)) {
+            view.onChangeState(anim);
+            view.onChangePosition(elapsed / ((float) flightTime));
             elapsed += 80;
 
             try {
@@ -122,6 +115,6 @@ public class PigeonThread extends Thread {
     }
 
     public void wakeUp() {
-        this.semaphore_pigeon.release();
+        this.semaphore.release();
     }
 }

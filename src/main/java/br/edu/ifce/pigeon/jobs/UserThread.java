@@ -1,19 +1,18 @@
 package br.edu.ifce.pigeon.jobs;
 
-import java.util.concurrent.Semaphore;
-
+import br.edu.ifce.pigeon.models.Mail;
 import br.edu.ifce.pigeon.models.MailBox;
 import br.edu.ifce.pigeon.models.User;
-import br.edu.ifce.pigeon.models.Mail;
+import br.edu.ifce.pigeon.views.IUsersListener;
 
 public class UserThread extends Thread {
+    private final IUsersListener view;
     private final User user;
     private final MailBox mailBox;
     private boolean alive;
 
-    private static Semaphore mutex = new Semaphore(1);
-
-    public UserThread(MailBox mailBox, User user) {
+    public UserThread(IUsersListener view, MailBox mailBox, User user) {
+        this.view = view;
         this.user = user;
         this.mailBox = mailBox;
         this.alive = true;
@@ -26,19 +25,32 @@ public class UserThread extends Thread {
     @Override
     public void run() {
         while (this.alive) {
+            write();
+
+            if (mailBox.isFull())
+                view.onRefreshStatus(user.getId(), User.Status.SLEEPING, 1);
+
+            mailBox.put(new Mail(this.user));
+        }
+    }
+
+    private void write() {
+        int elapsed = 0;
+        int writeTime = user.getWriteTime() * 1000;
+        while (this.alive && (elapsed < writeTime)) {
+            view.onRefreshStatus(user.getId(), User.Status.WRITING, elapsed / ((float) writeTime));
+            elapsed += 80;
+
             try {
-                mutex.acquire();
-                // num_mail++
-                this.mailBox.put(new Mail(this.user));
-                // if (num_mail % N == 0){
-                //    mutex.release();
-                ///}
-                mutex.release();
+                Thread.sleep(80);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    public User getUser() {
+        return this.user;
+    }
 }
 

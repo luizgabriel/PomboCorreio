@@ -5,7 +5,8 @@ public final class Navigation {
     private static Navigation instance;
     private INavigation navigationImpl;
 
-    private Navigation() {}
+    private Navigation() {
+    }
 
     public void setNavigationImpl(INavigation impl) {
         this.navigationImpl = impl;

@@ -1,6 +1,5 @@
 package br.edu.ifce.pigeon.ui;
 
-import br.edu.ifce.pigeon.presenters.CreatePigeonPresenter;
 import br.edu.ifce.pigeon.presenters.CreateUserPresenter;
 import br.edu.ifce.pigeon.views.ICreateView;
 import com.jfoenix.controls.JFXButton;
@@ -25,15 +24,22 @@ public class CreateUserWindow implements ICreateView {
         bar = new JFXSnackbar((Pane) root.lookup("#rootPane"));
 
         JFXButton saveBtn = (JFXButton) root.lookup("#saveBtn");
-        writeTimeTxtField.setOnKeyReleased(e -> presenter.onTypeWriteTime(writeTimeTxtField.getText()));
 
         saveBtn.setOnMouseClicked(e -> {
+<<<<<<< HEAD
             try {
                 presenter.onClickSaveBtn();
             } catch (FileNotFoundException e1) {
                 e1.printStackTrace();
             }
         });
+=======
+            presenter.onTypeWriteTime(writeTimeTxtField.getText());
+            presenter.onClickSaveBtn();
+        });
+
+        presenter.onLoadView();
+>>>>>>> ffbf314c1439d71a805c1562192e07001fb850ad
     }
 
     @Override

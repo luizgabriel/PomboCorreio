@@ -1,6 +1,5 @@
 package br.edu.ifce.pigeon.navigation;
 
-import br.edu.ifce.pigeon.ui.Component;
 import br.edu.ifce.pigeon.ui.CreatePigeonWindow;
 import br.edu.ifce.pigeon.ui.CreateUserWindow;
 import javafx.scene.Scene;
