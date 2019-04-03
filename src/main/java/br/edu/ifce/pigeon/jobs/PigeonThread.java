@@ -8,6 +8,7 @@ import java.util.concurrent.Semaphore;
 import static br.edu.ifce.pigeon.views.IPigeonListener.AnimState.*;
 
 public class PigeonThread extends Thread {
+    public static final int FRAME_TICK = 30;
     private final IPigeonListener view;
     private final MailBox mailBox;
     private int max_capacity;
@@ -63,38 +64,53 @@ public class PigeonThread extends Thread {
     }
 
     private void loadBox() {
+        long tick = 0;
         long elapsed = 0;
+        long last = 0;
 
         while (this.alive && (elapsed < loadTime)) {
-            view.onChangeState(LOADING);
-            view.onChangePosition(1);
-
-            elapsed += 80;
-            frameRate();
+            last = System.currentTimeMillis();
+            if (tick > FRAME_TICK) {
+                view.onChangeState(LOADING);
+                view.onChangePosition(1);
+                elapsed += FRAME_TICK;
+                tick = 0;
+            }
+            tick += (System.currentTimeMillis() - last);
         }
     }
 
     private void unloadBox() {
-        int elapsed = 0;
+        long tick = 0;
+        long elapsed = 0;
+        long last = 0;
 
         while (this.alive && (elapsed < unloadTime)) {
-            this.view.onChangeState(UNLOADING);
-            this.view.onChangePosition(1);
-            elapsed += 80;
-
-            frameRate();
+            last = System.currentTimeMillis();
+            if (tick > FRAME_TICK) {
+                this.view.onChangeState(UNLOADING);
+                this.view.onChangePosition(1);
+                elapsed += FRAME_TICK;
+                tick = 0;
+            }
+            tick += (System.currentTimeMillis() - last);
         }
     }
 
     private void fly(IPigeonListener.AnimState anim) {
-        int elapsed = 0;
+        long tick = 0;
+        long elapsed = 0;
+        long last = 0;
 
         while (this.alive && (elapsed < flightTime)) {
-            view.onChangeState(anim);
-            view.onChangePosition(elapsed / ((float) flightTime));
-            elapsed += 80;
-
-            frameRate();
+            last = System.currentTimeMillis();
+            if (tick > FRAME_TICK) {
+                view.onChangeState(anim);
+                view.onChangePosition(elapsed / ((float) flightTime));
+                elapsed += FRAME_TICK;
+                tick = 0;
+            }
+            tick += (System.currentTimeMillis() - last);
         }
     }
 
@@ -104,13 +120,5 @@ public class PigeonThread extends Thread {
 
     public void wakeUp() {
         this.semaphore.release();
-    }
-
-    private void frameRate() {
-        try {
-            Thread.sleep(80);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

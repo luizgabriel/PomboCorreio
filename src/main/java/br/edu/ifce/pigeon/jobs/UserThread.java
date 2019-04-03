@@ -6,6 +6,7 @@ import br.edu.ifce.pigeon.models.User;
 import br.edu.ifce.pigeon.views.IUsersListener;
 
 public class UserThread extends Thread {
+    public static final int FRAME_TICK = 10;
     private final IUsersListener view;
     private final User user;
     private final MailBox mailBox;
@@ -26,37 +27,35 @@ public class UserThread extends Thread {
     public void run() {
         while (this.alive) {
             write();
-
             if (mailBox.isFull())
                 view.onRefreshStatus(user.getId(), User.Status.SLEEPING, 1);
-
             mailBox.lock();
             if (this.alive)
                 mailBox.put(new Mail(this.user));
+            mailBox.unlock();
         }
     }
 
     private void write() {
-        int elapsed = 0;
-        int writeTime = user.getWriteTime() * 1000;
-        while (this.alive && (elapsed < writeTime)) {
-            view.onRefreshStatus(user.getId(), User.Status.WRITING, elapsed / ((float) writeTime));
-            elapsed += 80;
+        long tick = 0;
+        long elapsed = 0;
+        long last = 0;
+        long writeTime = getUser().getWriteTime() * 1000;
 
-            frameRate();
+        while (this.alive && (elapsed < writeTime)) {
+            last = System.currentTimeMillis();
+            if (tick > FRAME_TICK) {
+                view.onRefreshStatus(user.getId(), User.Status.WRITING, elapsed / ((float) writeTime));
+
+                elapsed += FRAME_TICK;
+                tick = 0;
+            }
+            tick += (System.currentTimeMillis() - last);
         }
     }
 
     public User getUser() {
         return this.user;
-    }
-
-    private void frameRate() {
-        try {
-            Thread.sleep(80);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }
 
