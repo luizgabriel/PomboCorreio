@@ -77,9 +77,13 @@ public class MainWindow implements IMainWindow {
     @Override
     public void toggleMenu() {
         if (navigationDrawer.isClosed()) {
+            navigationDrawer.setVisible(true);
             navigationDrawer.open();
+            navigationDrawer.setOverLayVisible(true);
         } else {
+            navigationDrawer.setVisible(false);
             navigationDrawer.close();
+            navigationDrawer.setOverLayVisible(false);
         }
     }
 
