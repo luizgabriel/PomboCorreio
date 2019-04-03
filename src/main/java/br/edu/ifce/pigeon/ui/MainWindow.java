@@ -69,16 +69,14 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void toggleMenu() {
-        Platform.runLater(() -> {
-            transition.setRate(transition.getRate() * -1);
-            transition.play();
+        transition.setRate(transition.getRate() * -1);
+        transition.play();
 
-            if (navigationDrawer.isClosed()) {
-                navigationDrawer.open();
-            } else {
-                navigationDrawer.close();
-            }
-        });
+        if (navigationDrawer.isClosed()) {
+            navigationDrawer.open();
+        } else {
+            navigationDrawer.close();
+        }
     }
 
     @Override
