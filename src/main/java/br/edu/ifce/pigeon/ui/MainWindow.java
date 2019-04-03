@@ -18,10 +18,7 @@ import javafx.util.Pair;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 
 public class MainWindow implements IMainWindow {
@@ -184,11 +181,11 @@ public class MainWindow implements IMainWindow {
     @Override
     public void askMailBoxCapacity() {
         TextInputDialog dialog = new TextInputDialog();
-
         dialog.setTitle("Caixa de Correio");
         dialog.setHeaderText("Informe a capacidade máxima da caixa de correio:");
         dialog.setContentText("Capacidade:");
-        dialog.showAndWait().ifPresent(presenter::onSetMailBoxCapacity);
+
+        presenter.onSetMailBoxCapacity(dialog.showAndWait().orElse("0"));
     }
 
     public Parent getRoot() {
