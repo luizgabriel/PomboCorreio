@@ -43,16 +43,20 @@ public class UserThread extends Thread {
             view.onRefreshStatus(user.getId(), User.Status.WRITING, elapsed / ((float) writeTime));
             elapsed += 80;
 
-            try {
-                Thread.sleep(80);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            frameRate();
         }
     }
 
     public User getUser() {
         return this.user;
+    }
+
+    private void frameRate() {
+        try {
+            Thread.sleep(80);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
 
