@@ -31,7 +31,7 @@ public class MainWindow implements IMainWindow {
     private final List<Image> left = new ArrayList<>();
     private final List<Image> right = new ArrayList<>();
 
-    private final Map<Integer, Pair<Integer, UserItem>> usersItems = new HashMap<>();
+    private final Map<Integer, UserItem> usersItems = new HashMap<>();
 
     //Components
     private final ImageView imageView;
@@ -140,10 +140,9 @@ public class MainWindow implements IMainWindow {
     public void addUser(int userId) {
         try {
             UserItem item = new UserItem(userId);
-            int index = usersItems.size();
 
-            usersItems.put(userId, new Pair<>(index, item));
-            usersBox.getChildren().add(index, item.getRoot());
+            usersItems.put(userId, item);
+            usersBox.getChildren().add(item.getRoot());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -151,25 +150,23 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void removeUser(int userId) {
-        Pair<Integer, UserItem> item = usersItems.remove(userId);
-        usersBox.getChildren().remove((int) item.getKey());
+        UserItem item = usersItems.remove(userId);
+        usersBox.getChildren().remove(item.getRoot());
     }
 
     @Override
     public void updateUserStatus(int userId, User.Status status, float progress) {
         Platform.runLater(() -> {
-            Pair<Integer, UserItem> item = usersItems.get(userId);
+            UserItem item = usersItems.get(userId);
             if (item != null) {
-                item.getValue().onStatusRefreshed(status, progress);
+                item.onStatusRefreshed(status, progress);
             }
         });
     }
 
     @Override
     public void setMailCount(int current, int max) {
-        Platform.runLater(() -> {
-            mailCountLabel.setText(String.format("%d/%d", current, max));
-        });
+        Platform.runLater(() -> mailCountLabel.setText(String.format("%d/%d", current, max)));
     }
 
     @Override
