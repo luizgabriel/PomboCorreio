@@ -1,14 +1,14 @@
 package br.edu.ifce.pigeon.presenters;
 
 import br.edu.ifce.pigeon.jobs.ThreadController;
-import br.edu.ifce.pigeon.models.Mail;
 import br.edu.ifce.pigeon.models.User;
 import br.edu.ifce.pigeon.navigation.Navigation;
 import br.edu.ifce.pigeon.views.IMainWindow;
 import br.edu.ifce.pigeon.views.IPigeonListener;
 import br.edu.ifce.pigeon.views.IUsersListener;
 
-public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeonListener, IUsersListener {
+
+public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeonListener, IUsersListener, IMailBoxListener {
     private int currentPigeonFrame;
     private static final int MAX_PIGEON_FRAMES = 9;
 
@@ -24,10 +24,9 @@ public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeon
     public void onLoadView() {
         getView().loadPigeonFrames(MAX_PIGEON_FRAMES);
 
-
         this.controller.setPigeonListener(this);
         this.controller.setUsersListener(this);
-        this.controller.initMailBox(10);
+        getView().askMailBoxCapacity();
         getView().toggleMenu();
     }
 
@@ -72,14 +71,14 @@ public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeon
         getView().setHirePigeonDisable(false);
         getView().setFirePigeonDisable(true);
         getView().firePigeon();
-        //getView().toggleMenu();
+        getView().toggleMenu();
     }
 
     @Override
     public void onFired() {
         getView().setHirePigeonDisable(true);
         getView().setFirePigeonDisable(false);
-        //getView().toggleMenu();
+        getView().toggleMenu();
     }
 
     @Override
@@ -100,7 +99,6 @@ public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeon
     @Override
     public void onAdded(int userId) {
         getView().addUser(userId);
-        getView().toggleMenu();
     }
 
     @Override
@@ -112,4 +110,25 @@ public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeon
     public void onRefreshStatus(int userId, User.Status status, float percentage) {
         getView().updateUserStatus(userId, status, percentage);
     }
+    //</editor-fold>
+
+    //<editor-fold desc-"MailBox Listener">
+    @Override
+    public void onChange(int current, int max) {
+        getView().setMailCount(current, max);
+    }
+
+    public void onSetMailBoxCapacity(String capacityText) {
+        try {
+            int capacity = Integer.parseInt(capacityText);
+            if (capacity > 0) {
+                controller.initMailBox(capacity, this);
+            } else {
+                getView().askMailBoxCapacity();
+            }
+        } catch (NumberFormatException e) {
+            getView().askMailBoxCapacity();
+        }
+    }
+    //</editor-fold>
 }

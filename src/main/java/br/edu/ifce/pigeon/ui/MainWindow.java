@@ -6,10 +6,11 @@ import br.edu.ifce.pigeon.views.IMainWindow;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import javafx.application.Platform;
 import javafx.scene.Parent;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 public class MainWindow implements IMainWindow {
     private final Parent root = Component.load("main_screen.fxml");
@@ -39,6 +41,7 @@ public class MainWindow implements IMainWindow {
     private final JFXButton hirePigeonBtn;
     private final JFXButton firePigeonBtn;
     private final HBox usersBox;
+    private final Label mailCountLabel;
 
     public MainWindow() throws IOException {
         Parent menu = Component.load("navigation_menu.fxml");
@@ -51,6 +54,7 @@ public class MainWindow implements IMainWindow {
         navigationDrawer = (JFXDrawer) root.lookup("#navigation-drawer");
         hirePigeonBtn = (JFXButton) menu.lookup("#hire-pigeon-btn");
         firePigeonBtn = (JFXButton) menu.lookup("#fire-pigeon-btn");
+        mailCountLabel = (Label) root.lookup("#mailCountLabel");
         transition = new HamburgerSlideCloseTransition(hamburgerBtn);
         usersBox = new HBox();
 
@@ -68,14 +72,16 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void toggleMenu() {
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
+        Platform.runLater(() -> {
+            transition.setRate(transition.getRate() * -1);
+            transition.play();
 
-        if (navigationDrawer.isClosed()) {
-            navigationDrawer.open();
-        } else {
-            navigationDrawer.close();
-        }
+            if (navigationDrawer.isClosed()) {
+                navigationDrawer.open();
+            } else {
+                navigationDrawer.close();
+            }
+        });
     }
 
     @Override
@@ -160,7 +166,29 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void updateUserStatus(int userId, User.Status status, float progress) {
-        usersItems.get(userId).getValue().onStatusRefreshed(status, progress);
+        Platform.runLater(() -> {
+            Pair<Integer, UserItem> item = usersItems.get(userId);
+            if (item != null) {
+                item.getValue().onStatusRefreshed(status, progress);
+            }
+        });
+    }
+
+    @Override
+    public void setMailCount(int current, int max) {
+        Platform.runLater(() -> {
+            mailCountLabel.setText(String.format("%d/%d", current, max));
+        });
+    }
+
+    @Override
+    public void askMailBoxCapacity() {
+        TextInputDialog dialog = new TextInputDialog();
+
+        dialog.setTitle("Caixa de Correio");
+        dialog.setHeaderText("Informe a capacidade máxima da caixa de correio:");
+        dialog.setContentText("Capacidade:");
+        dialog.showAndWait().ifPresent(presenter::onSetMailBoxCapacity);
     }
 
     public Parent getRoot() {

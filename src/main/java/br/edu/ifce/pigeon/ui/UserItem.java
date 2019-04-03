@@ -26,7 +26,7 @@ public class UserItem implements IUserItem {
         statusLabel = (Label) root.lookup("#statusLabel");
         imageView = (ImageView) root.lookup("#imageView");
         progressBar = (ProgressBar) root.lookup("#progressBar");
-        JFXButton deleteBtn = (JFXButton) root.lookup("#deleteBtn");
+        ImageView deleteBtn = (ImageView) root.lookup("#deleteBtn");
 
         deleteBtn.setOnMouseClicked(e -> presenter.onClickCancel());
         presenter.onLoadView();

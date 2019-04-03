@@ -1,9 +1,9 @@
 package br.edu.ifce.pigeon.views;
 
-import br.edu.ifce.pigeon.jobs.ThreadController;
 import br.edu.ifce.pigeon.models.User;
 
 public interface IMainWindow {
+
 
     enum PigeonFacingDirection {
         LEFT,
@@ -22,5 +22,8 @@ public interface IMainWindow {
     void addUser(int userId);
     void removeUser(int userId);
     void updateUserStatus(int userId, User.Status status, float percentage);
+
+    void setMailCount(int current, int max);
+    void askMailBoxCapacity();
 
 }

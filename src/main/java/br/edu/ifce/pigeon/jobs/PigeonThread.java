@@ -15,7 +15,7 @@ public class PigeonThread extends Thread {
     private int unload_time;
     private int flight_time;
     private boolean alive;
-    public Semaphore semaphore_pigeon;
+    private Semaphore semaphore_pigeon;
 
     public PigeonThread(IPigeonListener view, MailBox mailBox) {
         this.view = view;
@@ -46,13 +46,9 @@ public class PigeonThread extends Thread {
 
                     view.onChangeState(LOADING);
                     view.onChangePosition(1);
-                    System.out.println("Dormindo");
                     semaphore_pigeon.acquire();
-
                 }
-                //mailBox.mutex.acquire();
                 loadBox();
-                //mailBox.mutex.release();
                 fly(TRAVEL_LEFT_TO_RIGHT);
                 unload_box();
                 fly(TRAVEL_RIGHT_TO_LEFT);

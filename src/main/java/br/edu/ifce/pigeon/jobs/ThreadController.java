@@ -2,6 +2,7 @@ package br.edu.ifce.pigeon.jobs;
 
 import br.edu.ifce.pigeon.models.MailBox;
 import br.edu.ifce.pigeon.models.User;
+import br.edu.ifce.pigeon.presenters.IMailBoxListener;
 import br.edu.ifce.pigeon.views.IPigeonListener;
 import br.edu.ifce.pigeon.views.IUsersListener;
 
@@ -45,8 +46,8 @@ public class ThreadController {
         return mailBox;
     }
 
-    public void initMailBox(int maxCapacity) {
-        this.mailBox = new MailBox(maxCapacity);
+    public void initMailBox(int maxCapacity, IMailBoxListener listener) {
+        this.mailBox = new MailBox(maxCapacity, listener);
     }
 
     public void initPigeonThread(int maxCapacity, int loadTime, int unloadTime, int flightTime) {
@@ -70,11 +71,12 @@ public class ThreadController {
 
     public void addUserThread(int writeTime) {
         User user = new User(writeTime);
-        UserThread thread = new UserThread(this.mailBox, user);
-        thread.start();
+        UserThread thread = new UserThread(usersListener, mailBox, user);
 
-        this.userThreads.put(user.getId(), thread);
-        this.usersListener.onAdded(user.getId());
+        userThreads.put(user.getId(), thread);
+        usersListener.onAdded(user.getId());
+
+        thread.start();
     }
 
     public void fireUser(int userId) {
