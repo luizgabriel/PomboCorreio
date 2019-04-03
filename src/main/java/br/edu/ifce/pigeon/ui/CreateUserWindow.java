@@ -29,6 +29,8 @@ public class CreateUserWindow implements ICreateView {
             presenter.onTypeWriteTime(writeTimeTxtField.getText());
             presenter.onClickSaveBtn();
         });
+
+        presenter.onLoadView();
     }
 
     @Override

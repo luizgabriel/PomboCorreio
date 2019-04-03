@@ -23,7 +23,7 @@ public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeon
     public void onLoadView() {
         getView().loadPigeonFrames(MAX_PIGEON_FRAMES);
 
-        this.controller.setPigeonController(this);
+        this.controller.setPigeon(this);
         this.controller.initMailBox(10);
 
         User u = new User(10);
@@ -68,14 +68,14 @@ public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeon
         controller.firePigeon();
     }
 
-    public void enablePigeonCreation() {
+    public void enableCreation() {
         getView().setHirePigeonDisable(false);
         getView().setFirePigeonDisable(true);
         getView().firePigeon();
     }
 
     @Override
-    public void disablePigeonCreation() {
+    public void disableCreation() {
         getView().setHirePigeonDisable(true);
         getView().setFirePigeonDisable(false);
         getView().toggleMenu();

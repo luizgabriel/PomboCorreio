@@ -17,4 +17,6 @@ public interface IMainWindow {
     void setHirePigeonDisable(boolean disabled);
     void setFirePigeonDisable(boolean disabled);
 
+    void addUser(int userId);
+
 }

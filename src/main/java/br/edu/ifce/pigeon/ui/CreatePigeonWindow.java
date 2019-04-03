@@ -34,6 +34,8 @@ public class CreatePigeonWindow implements ICreateView {
             presenter.onTypeTravelTime(travelTimeTxtField.getText());
             presenter.onClickSaveBtn();
         });
+
+        presenter.onLoadView();
     }
 
     @Override

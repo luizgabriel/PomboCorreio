@@ -10,6 +10,6 @@ public interface IPigeonController {
 
     void refreshPigeonFrame(AnimState state);
     void setPigeonPosition(float position);
-    void disablePigeonCreation();
-    void enablePigeonCreation();
+    void disableCreation();
+    void enableCreation();
 }

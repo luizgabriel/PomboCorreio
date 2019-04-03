@@ -3,6 +3,7 @@ package br.edu.ifce.pigeon.jobs;
 import br.edu.ifce.pigeon.models.MailBox;
 import br.edu.ifce.pigeon.models.User;
 import br.edu.ifce.pigeon.views.IPigeonController;
+import br.edu.ifce.pigeon.views.IUsersController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,19 +14,20 @@ public class ThreadController {
     private PigeonThread pigeonThread;
     private Map<Integer, UserThread> userThreads;
 
-    private IPigeonController pigeonController;
+    private IPigeonController pigeon;
+    private IUsersController users;
 
     private ThreadController() {
         this.userThreads = new HashMap<>();
     }
 
-    public void setPigeonController(IPigeonController pigeonController) {
-        this.pigeonController = pigeonController;
+    public void setPigeon(IPigeonController pigeon) {
+        this.pigeon = pigeon;
 
         if (pigeonThread == null) {
-            this.pigeonController.enablePigeonCreation();
+            this.pigeon.enableCreation();
         } else {
-            this.pigeonController.disablePigeonCreation();
+            this.pigeon.disableCreation();
         }
     }
 
@@ -39,18 +41,18 @@ public class ThreadController {
 
     public void initPigeonThread(int maxCapacity, int loadTime, int unloadTime, int flightTime) {
         if (pigeonThread == null) {
-            pigeonThread = new PigeonThread(this.pigeonController, this.mailBox);
+            pigeonThread = new PigeonThread(this.pigeon, this.mailBox);
             pigeonThread.init(maxCapacity, loadTime, unloadTime, flightTime);
             mailBox.setPigeonThread(pigeonThread);
 
-            pigeonController.disablePigeonCreation();
+            pigeon.disableCreation();
         }
     }
 
     public void firePigeon() {
         if (this.pigeonThread != null) {
             this.pigeonThread.fire();
-            this.pigeonController.enablePigeonCreation();
+            this.pigeon.enableCreation();
 
             this.pigeonThread = null;
         }
@@ -62,8 +64,8 @@ public class ThreadController {
         this.userThreads.put(user.getId(), thread);
     }
 
-    public void fireUser(User user) {
-        UserThread thread = this.userThreads.remove(user.getId());
+    public void fireUser(int userId) {
+        UserThread thread = this.userThreads.remove(userId);
         thread.fire();
     }
 
@@ -74,5 +76,9 @@ public class ThreadController {
         }
 
         return instance;
+    }
+
+    public User getUser(int userId) {
+        return this.userThreads.get(userId).getUser();
     }
 }

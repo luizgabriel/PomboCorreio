@@ -40,5 +40,8 @@ public class UserThread extends Thread {
         }
     }
 
+    public User getUser() {
+        return this.user;
+    }
 }
 

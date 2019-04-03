@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView id="imageView" fitHeight="120.0" fitWidth="120.0" layoutX="15.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
+      <Label id="statusLabel" layoutX="8.0" layoutY="128.0" style="-fx-background-color: #dddddd;" text="Iniciando..." textFill="#393939">
+         <padding>
+            <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+         </padding>
+      </Label>
+      <JFXButton id="deleteBtn" cancelButton="true" layoutX="124.0" layoutY="125.0" prefHeight="17.0" prefWidth="22.0" style="-fx-background-color: #FF0000;" text="X" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="10.0" />
+         </font>
+      </JFXButton>
+   </children>
+</AnchorPane>
