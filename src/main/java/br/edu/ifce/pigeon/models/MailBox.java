@@ -32,13 +32,11 @@ public class MailBox implements Iterable<Mail> {
 
     public void put(Mail m) {
         try {
+            mainBox.acquire();
+            queue.put(m);
             if (pigeonThread != null && (queue.size() % pigeonThread.getMaxCapacity() == 0)) {
                 pigeonThread.wakeUp();
             }
-
-            mainBox.acquire();
-            queue.put(m);
-
             listener.onChange(getCount(), getMaxCapacity());
         } catch (InterruptedException e) {
             e.printStackTrace();
