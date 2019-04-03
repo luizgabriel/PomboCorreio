@@ -2,17 +2,10 @@ package br.edu.ifce.pigeon.jobs;
 
 import br.edu.ifce.pigeon.models.MailBox;
 import br.edu.ifce.pigeon.models.User;
-<<<<<<< HEAD
-import br.edu.ifce.pigeon.ui.MainWindow;
-import br.edu.ifce.pigeon.views.IPigeonController;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-=======
+
 import br.edu.ifce.pigeon.presenters.IMailBoxListener;
 import br.edu.ifce.pigeon.views.IPigeonListener;
 import br.edu.ifce.pigeon.views.IUsersListener;
->>>>>>> ffbf314c1439d71a805c1562192e07001fb850ad
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -81,19 +74,13 @@ public class ThreadController {
 
     public void addUserThread(int writeTime) throws FileNotFoundException {
         User user = new User(writeTime);
-<<<<<<< HEAD
-        UserThread thread = new UserThread(this.mailBox, user);
-        this.userThreads.put(user.getId(), thread);
-        //========== teste ==============
-        putUserImage();
-=======
+
         UserThread thread = new UserThread(usersListener, mailBox, user);
 
         userThreads.put(user.getId(), thread);
         usersListener.onAdded(user.getId());
 
         thread.start();
->>>>>>> ffbf314c1439d71a805c1562192e07001fb850ad
     }
 
     public void fireUser(int userId) {
@@ -113,19 +100,7 @@ public class ThreadController {
         return instance;
     }
 
-<<<<<<< HEAD
-    private void putUserImage() throws FileNotFoundException {
-        InputStream file = new FileInputStream(String.format("C:\\Users\\Mateus\\Documents\\Mateus\\PomboCorreio1\\src\\main\\resources\\img\\user\\user_tipo0%d.png", 4));
-        Image user = new Image(file);
-        javafx.scene.image.ImageView view = new javafx.scene.image.ImageView(user);
-        view.setFitHeight(100);
-        view.setFitWidth(100);
-        MainWindow.gridPaneUsers.add(view, 0 , 0);
-
-
-=======
     public User getUser(int userId) {
         return this.userThreads.get(userId).getUser();
->>>>>>> ffbf314c1439d71a805c1562192e07001fb850ad
     }
 }

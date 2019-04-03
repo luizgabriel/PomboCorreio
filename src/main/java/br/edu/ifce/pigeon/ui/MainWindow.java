@@ -13,13 +13,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-<<<<<<< HEAD
-import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
-=======
+
 import javafx.scene.layout.HBox;
 import javafx.util.Pair;
->>>>>>> ffbf314c1439d71a805c1562192e07001fb850ad
+
 
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
@@ -45,12 +42,10 @@ public class MainWindow implements IMainWindow {
     private final JFXDrawer navigationDrawer;
     private final JFXButton hirePigeonBtn;
     private final JFXButton firePigeonBtn;
-<<<<<<< HEAD
-    public static GridPane gridPaneUsers;
-=======
+
     private final HBox usersBox;
     private final Label mailCountLabel;
->>>>>>> ffbf314c1439d71a805c1562192e07001fb850ad
+
 
     public MainWindow() throws IOException {
         Parent menu = Component.load("navigation_menu.fxml");
@@ -66,31 +61,10 @@ public class MainWindow implements IMainWindow {
         mailCountLabel = (Label) root.lookup("#mailCountLabel");
         usersBox = new HBox();
 
-<<<<<<< HEAD
-        //=================     testando ==============================
 
-        gridPaneUsers = (GridPane) root.lookup("#users-grid");
-//        InputStream file = new FileInputStream(String.format("C:\\Users\\Mateus\\Documents\\Mateus\\PomboCorreio1\\src\\main\\resources\\img\\user\\user_tipo0%d.png", 4));
-//        Image user = new Image(file);
-//        ImageView view = new ImageView(user);
-//        ImageView view1 = new ImageView(user);
-//        view.setFitHeight(100);
-//        view.setFitWidth(100);
-//
-//        view1.setFitHeight(100);
-//        view1.setFitWidth(100);
-//
-//        gridPaneUsers.add(view, 0 , 0);
-//        gridPaneUsers.add(view1, 1 , 0);
-
-
-
-        transition.setRate(-1);
-        imageView.setLayoutY(200);
-=======
         imageView.setLayoutY(100);
         usersScroll.setContent(usersBox);
->>>>>>> ffbf314c1439d71a805c1562192e07001fb850ad
+
         navigationDrawer.setSidePane(menu);
         hamburgerBtn.setOnMouseClicked(e -> presenter.onClickMenuBtn());
         hirePigeonBtn.setOnMouseClicked(e -> presenter.onClickHirePigeonBtn());

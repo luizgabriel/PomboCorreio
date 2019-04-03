@@ -23,7 +23,7 @@ public abstract class CreatePresenter extends BasePresenter<ICreateView> {
     }
 
     protected abstract boolean validate();
-    public abstract void onSave();
+    public abstract void onSave() throws FileNotFoundException;
 
     protected int parseInput(String text) {
         try {
