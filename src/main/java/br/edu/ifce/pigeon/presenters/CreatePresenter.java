@@ -21,6 +21,7 @@ public abstract class CreatePresenter extends BasePresenter<ICreateView> {
     }
 
     protected abstract boolean validate();
+
     public abstract void onSave();
 
     protected int parseInput(String text) {

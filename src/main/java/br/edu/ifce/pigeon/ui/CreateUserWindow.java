@@ -1,6 +1,5 @@
 package br.edu.ifce.pigeon.ui;
 
-import br.edu.ifce.pigeon.presenters.CreatePigeonPresenter;
 import br.edu.ifce.pigeon.presenters.CreateUserPresenter;
 import br.edu.ifce.pigeon.views.ICreateView;
 import com.jfoenix.controls.JFXButton;

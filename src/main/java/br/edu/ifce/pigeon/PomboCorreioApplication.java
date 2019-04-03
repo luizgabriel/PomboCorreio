@@ -2,10 +2,10 @@ package br.edu.ifce.pigeon;
 
 import br.edu.ifce.pigeon.navigation.JavaFXNavigation;
 import br.edu.ifce.pigeon.navigation.Navigation;
+import br.edu.ifce.pigeon.ui.MainWindow;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import br.edu.ifce.pigeon.ui.MainWindow;
 
 public class PomboCorreioApplication extends Application {
 

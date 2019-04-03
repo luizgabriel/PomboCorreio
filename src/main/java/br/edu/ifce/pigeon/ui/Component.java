@@ -1,11 +1,9 @@
 package br.edu.ifce.pigeon.ui;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -14,7 +12,8 @@ import java.net.URL;
 
 public final class Component {
 
-    private Component() {} //Prevent instantiation
+    private Component() {
+    } //Prevent instantiation
 
     public static Parent load(String name) throws IOException {
         FXMLLoader loader = new FXMLLoader();

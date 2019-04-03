@@ -1,8 +1,8 @@
 package br.edu.ifce.pigeon.jobs;
 
+import br.edu.ifce.pigeon.models.Mail;
 import br.edu.ifce.pigeon.models.MailBox;
 import br.edu.ifce.pigeon.models.User;
-import br.edu.ifce.pigeon.models.Mail;
 import br.edu.ifce.pigeon.views.IUsersListener;
 
 public class UserThread extends Thread {
@@ -24,7 +24,7 @@ public class UserThread extends Thread {
 
     @Override
     public void run() {
-        while (this.alive) {
+        while (this.alive) {d c
             write();
 
             if (mailBox.isFull())

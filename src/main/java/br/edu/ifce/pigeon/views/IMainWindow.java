@@ -13,17 +13,25 @@ public interface IMainWindow {
     void toggleMenu();
 
     void loadPigeonFrames(int framesCount);
+
     void setPigeonFrame(int frame, PigeonFacingDirection direction);
+
     void setPigeonPosition(float position);
+
     void setHirePigeonDisable(boolean disabled);
+
     void setFirePigeonDisable(boolean disabled);
+
     void firePigeon();
 
     void addUser(int userId);
+
     void removeUser(int userId);
+
     void updateUserStatus(int userId, User.Status status, float percentage);
 
     void setMailCount(int current, int max);
+
     void askMailBoxCapacity();
 
 }

@@ -36,7 +36,7 @@ public class ThreadController {
         this.usersListener = usersListener;
 
         if (userThreads.size() > 0) {
-            for (UserThread threads: userThreads.values()) {
+            for (UserThread threads : userThreads.values()) {
                 this.usersListener.onAdded(threads.getUser().getId());
             }
         }
@@ -87,6 +87,7 @@ public class ThreadController {
     }
 
     private static ThreadController instance;
+
     public static ThreadController getInstance() {
         if (instance == null) {
             instance = new ThreadController();

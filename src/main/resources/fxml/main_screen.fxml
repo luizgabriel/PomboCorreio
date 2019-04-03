@@ -1,38 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-
 <VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-  <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="471.0" prefWidth="800.0">
-         <children>
-            <ImageView fitHeight="632.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../img/scenario/resized_scenario.png" />
-               </image>
-            </ImageView>
-            <ImageView id="image-view-pigeon" fitHeight="114.0" fitWidth="127.0" layoutX="322.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
-            <Label id="mailCountLabel" layoutX="120.0" layoutY="237.0" text="0/10" />
-            <ImageView fitHeight="150.0" fitWidth="20.0" layoutX="95.0" layoutY="235.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../img/mail/mail_icon.png" />
-               </image>
-            </ImageView>
-            <ScrollPane id="usersScroll" layoutY="450.0" prefHeight="150.0" prefWidth="800.0" style="-fx-background-color: #dddddd;" />
-            <JFXDrawer id="navigation-drawer" defaultDrawerSize="220.0" overLayVisible="false" prefHeight="600.0" prefWidth="220.0" resizableOnDrag="true" />
-            <JFXHamburger id="menu-btn" alignment="TOP_RIGHT" layoutX="754.0" layoutY="14.0" prefHeight="22.0" prefWidth="32.0" />
-         </children>
-    </AnchorPane>
-  </children>
+    <children>
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="471.0" prefWidth="800.0">
+            <children>
+                <ImageView fitHeight="632.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../img/scenario/resized_scenario.png"/>
+                    </image>
+                </ImageView>
+                <ImageView id="image-view-pigeon" fitHeight="114.0" fitWidth="127.0" layoutX="322.0" layoutY="36.0"
+                           pickOnBounds="true" preserveRatio="true"/>
+                <Label id="mailCountLabel" layoutX="120.0" layoutY="237.0" text="0/10"/>
+                <ImageView fitHeight="150.0" fitWidth="20.0" layoutX="95.0" layoutY="235.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@../img/mail/mail_icon.png"/>
+                    </image>
+                </ImageView>
+                <ScrollPane id="usersScroll" layoutY="450.0" prefHeight="150.0" prefWidth="800.0"
+                            style="-fx-background-color: #dddddd;"/>
+                <JFXDrawer id="navigation-drawer" defaultDrawerSize="220.0" overLayVisible="false" prefHeight="600.0"
+                           prefWidth="220.0" resizableOnDrag="true"/>
+                <JFXHamburger id="menu-btn" alignment="TOP_RIGHT" layoutX="754.0" layoutY="14.0" prefHeight="22.0"
+                              prefWidth="32.0"/>
+            </children>
+        </AnchorPane>
+    </children>
 </VBox>

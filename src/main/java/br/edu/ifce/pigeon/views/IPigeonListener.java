@@ -9,7 +9,10 @@ public interface IPigeonListener {
     }
 
     void onChangeState(AnimState state);
+
     void onChangePosition(float position);
+
     void onFired();
+
     void onCreated();
 }

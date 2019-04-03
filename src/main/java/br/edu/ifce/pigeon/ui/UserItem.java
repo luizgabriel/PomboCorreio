@@ -3,7 +3,6 @@ package br.edu.ifce.pigeon.ui;
 import br.edu.ifce.pigeon.models.User;
 import br.edu.ifce.pigeon.presenters.UserItemPresenter;
 import br.edu.ifce.pigeon.views.IUserItem;
-import com.jfoenix.controls.JFXButton;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;

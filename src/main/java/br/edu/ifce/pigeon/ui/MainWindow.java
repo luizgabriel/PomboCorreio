@@ -6,11 +6,11 @@ import br.edu.ifce.pigeon.views.IMainWindow;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import javafx.application.Platform;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -18,8 +18,10 @@ import javafx.util.Pair;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.Semaphore;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainWindow implements IMainWindow {
     private final Parent root = Component.load("main_screen.fxml");
@@ -34,7 +36,6 @@ public class MainWindow implements IMainWindow {
     //Components
     private final ImageView imageView;
     private final JFXDrawer navigationDrawer;
-    private final HamburgerSlideCloseTransition transition;
     private final JFXButton hirePigeonBtn;
     private final JFXButton firePigeonBtn;
     private final HBox usersBox;
@@ -52,10 +53,8 @@ public class MainWindow implements IMainWindow {
         hirePigeonBtn = (JFXButton) menu.lookup("#hire-pigeon-btn");
         firePigeonBtn = (JFXButton) menu.lookup("#fire-pigeon-btn");
         mailCountLabel = (Label) root.lookup("#mailCountLabel");
-        transition = new HamburgerSlideCloseTransition(hamburgerBtn);
         usersBox = new HBox();
 
-        transition.setRate(-1);
         imageView.setLayoutY(100);
         usersScroll.setContent(usersBox);
         navigationDrawer.setSidePane(menu);
@@ -69,9 +68,6 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void toggleMenu() {
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
-
         if (navigationDrawer.isClosed()) {
             navigationDrawer.open();
         } else {
