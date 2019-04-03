@@ -30,7 +30,9 @@ public class UserThread extends Thread {
             if (mailBox.isFull())
                 view.onRefreshStatus(user.getId(), User.Status.SLEEPING, 1);
 
-            mailBox.put(new Mail(this.user));
+            mailBox.lock();
+            if (this.alive)
+                mailBox.put(new Mail(this.user));
         }
     }
 
