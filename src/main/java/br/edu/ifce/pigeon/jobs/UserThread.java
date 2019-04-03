@@ -24,7 +24,7 @@ public class UserThread extends Thread {
 
     @Override
     public void run() {
-        while (this.alive) {d c
+        while (this.alive) {
             write();
 
             if (mailBox.isFull())
