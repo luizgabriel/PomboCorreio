@@ -2,10 +2,9 @@ package br.edu.ifce.pigeon.presenters;
 
 import br.edu.ifce.pigeon.jobs.ThreadController;
 import br.edu.ifce.pigeon.models.User;
-import br.edu.ifce.pigeon.views.IRefreshStatus;
 import br.edu.ifce.pigeon.views.IUserItem;
 
-public class UserItemPresenter extends BasePresenter<IUserItem> implements IRefreshStatus {
+public class UserItemPresenter extends BasePresenter<IUserItem> {
     private final ThreadController controller = ThreadController.getInstance();
     private final int userId;
 
@@ -18,10 +17,12 @@ public class UserItemPresenter extends BasePresenter<IUserItem> implements IRefr
     public void onLoadView() {
         User user = controller.getUser(userId);
         getView().setImage(user.getImage());
+        onRefresh(User.Status.WRITING, 0);
     }
 
-    @Override
-    public void onRefresh(Status status) {
+    public void onRefresh(User.Status status, float progress) {
+        getView().setProgress(progress);
+
         switch (status) {
             case SLEEPING:
                 getView().setStatus("Dormindo...");

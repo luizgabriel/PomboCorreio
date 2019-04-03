@@ -23,4 +23,13 @@ public class User {
     public int getImage() {
         return image;
     }
+
+    public int getWriteTime() {
+        return writeTime;
+    }
+
+    public enum Status {
+        SLEEPING,
+        WRITING
+    }
 }

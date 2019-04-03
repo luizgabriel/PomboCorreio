@@ -1,10 +1,12 @@
 package br.edu.ifce.pigeon.ui;
 
+import br.edu.ifce.pigeon.models.User;
 import br.edu.ifce.pigeon.presenters.UserItemPresenter;
 import br.edu.ifce.pigeon.views.IUserItem;
 import com.jfoenix.controls.JFXButton;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -16,20 +18,18 @@ public class UserItem implements IUserItem {
 
     private final Label statusLabel;
     private final ImageView imageView;
+    private final ProgressBar progressBar;
 
     public UserItem(int userId) throws IOException {
         presenter = new UserItemPresenter(this, userId);
 
-        statusLabel = (Label) root.lookup("#statuslabel");
+        statusLabel = (Label) root.lookup("#statusLabel");
         imageView = (ImageView) root.lookup("#imageView");
-        JFXButton cancelBtn = (JFXButton) root.lookup("#cancelBtn");
+        progressBar = (ProgressBar) root.lookup("#progressBar");
+        JFXButton deleteBtn = (JFXButton) root.lookup("#deleteBtn");
 
-        cancelBtn.setOnMouseClicked(e -> presenter.onClickCancel());
+        deleteBtn.setOnMouseClicked(e -> presenter.onClickCancel());
         presenter.onLoadView();
-    }
-
-    public Node getRoot() {
-        return root;
     }
 
     @Override
@@ -45,5 +45,18 @@ public class UserItem implements IUserItem {
     @Override
     public void setStatus(String s) {
         statusLabel.setText(s);
+    }
+
+    @Override
+    public void setProgress(float progress) {
+        progressBar.setProgress(progress);
+    }
+
+    public void onStatusRefreshed(User.Status status, float progress) {
+        presenter.onRefresh(status, progress);
+    }
+
+    public Node getRoot() {
+        return root;
     }
 }

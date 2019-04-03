@@ -13,7 +13,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 
-<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="471.0" prefWidth="800.0">
          <children>
@@ -23,7 +23,7 @@
                </image>
             </ImageView>
             <ImageView id="image-view-pigeon" fitHeight="114.0" fitWidth="127.0" layoutX="322.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
-            <JFXListView id="usersList" layoutY="450.0" orientation="HORIZONTAL" prefHeight="150.0" prefWidth="800.0" style="-fx-background-color: #ebebeb;" />
+            <ScrollPane id="usersScroll" layoutY="450.0" prefHeight="150.0" prefWidth="800.0" style="-fx-background-color: #dddddd;" />
             <JFXDrawer id="navigation-drawer" defaultDrawerSize="220.0" overLayVisible="false" prefHeight="600.0" prefWidth="220.0" resizableOnDrag="true" />
             <JFXHamburger id="menu-btn" alignment="TOP_RIGHT" layoutX="754.0" layoutY="14.0" prefHeight="22.0" prefWidth="32.0" />
          </children>
