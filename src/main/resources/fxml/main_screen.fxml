@@ -23,7 +23,7 @@
                     </image>
                 </ImageView>
                 <ImageView id="image-view-pigeon" fitHeight="70.0" fitWidth="70.0" layoutX="322.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
-                <Label id="mailCountLabel" layoutX="699.0" layoutY="45.0" text="0/0" textFill="WHITE">
+                <Label id="mailCountLabel" layoutX="672.0" layoutY="45.0" text="10/10" textAlignment="RIGHT" textFill="WHITE">
                <font>
                   <Font name="Monospaced Bold" size="25.0" />
                </font></Label>
