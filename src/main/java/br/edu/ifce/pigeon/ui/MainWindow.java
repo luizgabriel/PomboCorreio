@@ -109,10 +109,9 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void setPigeonPosition(float time) {
-        this.imageView.setLayoutX(80 + time * 600);
+        this.imageView.setLayoutX(80 + time * 650);
 
-        // hmax = 250, hmin = 350, a = - 100*(hmax - hmin) =
-        this.imageView.setLayoutY(350 - 200*time + 200*Math.pow(time, 2));
+        this.imageView.setLayoutY(300 - 300*time + 300*Math.pow(time, 2));
     }
 
     @Override
