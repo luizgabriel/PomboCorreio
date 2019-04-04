@@ -49,10 +49,6 @@ public class PigeonThread extends Thread {
                     semaphore.acquire();
                 }
 
-                for (int i = 0; i < this.max_capacity; i++) {
-                    this.mailBox.take();
-                }
-
                 loadBox();
                 fly(TRAVEL_LEFT_TO_RIGHT);
                 unloadBox();
@@ -64,53 +60,59 @@ public class PigeonThread extends Thread {
     }
 
     private void loadBox() {
-        long tick = 0;
+
         long elapsed = 0;
-        long last = 0;
 
         while (this.alive && (elapsed < loadTime)) {
-            last = System.currentTimeMillis();
-            if (tick > FRAME_TICK) {
+            elapsed += 50;
+
+            view.onChangeState(LOADING);
+            view.onChangePosition(1);
+
+            Count(50);
+        }
+
+        for (int i = 0; i < this.max_capacity; i++) {
+            this.mailBox.take();
+        }
+
+        /*
+        long last = System.currentTimeMillis();
+        long elapsed = last;
+        long mail_take = last;
+        while (this.alive && (System.currentTimeMillis() - last < loadTime)){
+            if (System.currentTimeMillis() - elapsed >= 80) {
+                elapsed = System.currentTimeMillis();
                 view.onChangeState(LOADING);
                 view.onChangePosition(1);
-                elapsed += FRAME_TICK;
-                tick = 0;
             }
-            tick += (System.currentTimeMillis() - last);
+            if (System.currentTimeMillis() - mail_take >= (loadTime / max_capacity)*0.8) {
+                mail_take = System.currentTimeMillis();
+                this.mailBox.take();
+            }
         }
+        */
     }
 
     private void unloadBox() {
-        long tick = 0;
-        long elapsed = 0;
-        long last = 0;
+        int elapsed = 0;
 
         while (this.alive && (elapsed < unloadTime)) {
-            last = System.currentTimeMillis();
-            if (tick > FRAME_TICK) {
-                this.view.onChangeState(UNLOADING);
-                this.view.onChangePosition(1);
-                elapsed += FRAME_TICK;
-                tick = 0;
-            }
-            tick += (System.currentTimeMillis() - last);
+            this.view.onChangeState(UNLOADING);
+            this.view.onChangePosition(1);
+            elapsed += 50;
+            Count(50);
         }
     }
 
     private void fly(IPigeonListener.AnimState anim) {
-        long tick = 0;
-        long elapsed = 0;
-        long last = 0;
+        int elapsed = 0;
 
         while (this.alive && (elapsed < flightTime)) {
-            last = System.currentTimeMillis();
-            if (tick > FRAME_TICK) {
-                view.onChangeState(anim);
-                view.onChangePosition(elapsed / ((float) flightTime));
-                elapsed += FRAME_TICK;
-                tick = 0;
-            }
-            tick += (System.currentTimeMillis() - last);
+            view.onChangeState(anim);
+            view.onChangePosition(elapsed / ((float) flightTime));
+            elapsed += 50;
+            Count(50);
         }
     }
 
@@ -120,5 +122,16 @@ public class PigeonThread extends Thread {
 
     public void wakeUp() {
         this.semaphore.release();
+    }
+
+    public static void Count (int time){
+        boolean flag = true;
+
+        long last = System.currentTimeMillis();
+        while (flag){
+            if( System.currentTimeMillis() - last >= time){
+                flag = false;
+            }
+        }
     }
 }

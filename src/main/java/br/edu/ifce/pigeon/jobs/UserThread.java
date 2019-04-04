@@ -37,25 +37,29 @@ public class UserThread extends Thread {
     }
 
     private void write() {
-        long tick = 0;
         long elapsed = 0;
-        long last = 0;
         long writeTime = getUser().getWriteTime() * 1000;
 
         while (this.alive && (elapsed < writeTime)) {
-            last = System.currentTimeMillis();
-            if (tick > FRAME_TICK) {
-                view.onRefreshStatus(user.getId(), User.Status.WRITING, elapsed / ((float) writeTime));
-
-                elapsed += FRAME_TICK;
-                tick = 0;
-            }
-            tick += (System.currentTimeMillis() - last);
+            view.onRefreshStatus(user.getId(), User.Status.WRITING, elapsed / ((float) writeTime));
+            elapsed += 50;
+            Count(50);
         }
     }
 
     public User getUser() {
         return this.user;
+    }
+
+    public static void Count (int time){
+        boolean flag = true;
+
+        long last = System.currentTimeMillis();
+        while (flag){
+            if( System.currentTimeMillis() - last >= time){
+                flag = false;
+            }
+        }
     }
 }
 
