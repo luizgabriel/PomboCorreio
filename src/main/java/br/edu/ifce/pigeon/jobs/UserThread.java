@@ -28,6 +28,7 @@ public class UserThread extends Thread {
             write();
             if (mailBox.isFull())
                 view.onRefreshStatus(user.getId(), User.Status.SLEEPING, 1);
+
             mailBox.put(this);
         }
     }

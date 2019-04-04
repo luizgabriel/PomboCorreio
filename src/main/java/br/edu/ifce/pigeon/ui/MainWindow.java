@@ -81,9 +81,9 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void loadPigeonFrames(int framesCount) {
-        for (int i = 1; i <= framesCount; i++) {
+        for (int i = 0; i < framesCount; i++) {
             try {
-                BufferedImage image = Component.loadImageBuffer(String.format("pigeon/koopatroopa_frame%02d.png", i));
+                BufferedImage image = Component.loadImageBuffer(String.format("pigeon/koopatroopa_frame0%d.png", i));
                 pigeon.add(Component.loadImage(image));
             } catch (IOException e) {
                 e.printStackTrace();
