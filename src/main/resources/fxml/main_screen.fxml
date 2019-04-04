@@ -23,18 +23,18 @@
                     </image>
                 </ImageView>
                 <ImageView id="image-view-pigeon" fitHeight="70.0" fitWidth="70.0" layoutX="322.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
-                <Label id="mailCountLabel" layoutX="672.0" layoutY="45.0" text="10/10" textAlignment="RIGHT" textFill="WHITE">
+                <Label id="mailCountLabel" layoutX="672.0" layoutY="21.0" text="10/10" textAlignment="RIGHT" textFill="WHITE">
                <font>
                   <Font name="Monospaced Bold" size="25.0" />
                </font></Label>
-                <ImageView fitHeight="150.0" fitWidth="30.0" layoutX="754.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="150.0" fitWidth="30.0" layoutX="756.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../img/icons/coin.gif" />
                     </image>
                 </ImageView>
                 <ScrollPane id="usersScroll" layoutY="450.0" prefHeight="150.0" prefWidth="800.0" />
                 <JFXDrawer id="navigation-drawer" defaultDrawerSize="220.0" overLayVisible="false" prefHeight="600.0" prefWidth="220.0" resizableOnDrag="true" />
-                <JFXHamburger id="menu-btn" alignment="TOP_RIGHT" layoutX="754.0" layoutY="14.0" prefHeight="22.0" prefWidth="32.0" />
+                <JFXHamburger id="menu-btn" layoutX="14.0" layoutY="14.0" prefHeight="22.0" prefWidth="32.0" />
             </children>
         </AnchorPane>
     </children>

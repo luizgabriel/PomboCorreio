@@ -15,3 +15,12 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile 'com.jfoenix:jfoenix:8.0.8'
 }
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'br.edu.ifce.pigeon.PomboCorreioApplication'
+        )
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}

@@ -49,7 +49,7 @@ public class PigeonThread extends Thread {
 
                 loadBox();
 
-                for (int i = 0; i < this.max_capacity; i++) {
+                for (int i = 0; i < getMaxCapacity(); i++) {
                     this.mailBox.take();
                 }
 
