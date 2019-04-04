@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.scene.control.Label?>
@@ -7,30 +12,29 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+
 <VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="471.0" prefWidth="800.0">
             <children>
                 <ImageView fitHeight="632.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../img/scenario/resized_scenario.png"/>
+                        <Image url="@../img/scenario/scenario.png" />
                     </image>
                 </ImageView>
-                <ImageView id="image-view-pigeon" fitHeight="114.0" fitWidth="127.0" layoutX="322.0" layoutY="36.0"
-                           pickOnBounds="true" preserveRatio="true"/>
-                <Label id="mailCountLabel" layoutX="120.0" layoutY="237.0" text="0/10"/>
-                <ImageView fitHeight="150.0" fitWidth="20.0" layoutX="95.0" layoutY="235.0" pickOnBounds="true"
-                           preserveRatio="true">
+                <ImageView id="image-view-pigeon" fitHeight="70.0" fitWidth="70.0" layoutX="322.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
+                <Label id="mailCountLabel" layoutX="699.0" layoutY="45.0" text="0/0" textFill="WHITE">
+               <font>
+                  <Font name="Monospaced Bold" size="25.0" />
+               </font></Label>
+                <ImageView fitHeight="150.0" fitWidth="30.0" layoutX="754.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../img/mail/mail_icon.png"/>
+                        <Image url="@../img/icons/coin.gif" />
                     </image>
                 </ImageView>
-                <ScrollPane id="usersScroll" layoutY="450.0" prefHeight="150.0" prefWidth="800.0"
-                            style="-fx-background-color: #dddddd;"/>
-                <JFXDrawer id="navigation-drawer" defaultDrawerSize="220.0" overLayVisible="false" prefHeight="600.0"
-                           prefWidth="220.0" resizableOnDrag="true"/>
-                <JFXHamburger id="menu-btn" alignment="TOP_RIGHT" layoutX="754.0" layoutY="14.0" prefHeight="22.0"
-                              prefWidth="32.0"/>
+                <ScrollPane id="usersScroll" layoutY="450.0" prefHeight="150.0" prefWidth="800.0" />
+                <JFXDrawer id="navigation-drawer" defaultDrawerSize="220.0" overLayVisible="false" prefHeight="600.0" prefWidth="220.0" resizableOnDrag="true" />
+                <JFXHamburger id="menu-btn" alignment="TOP_RIGHT" layoutX="754.0" layoutY="14.0" prefHeight="22.0" prefWidth="32.0" />
             </children>
         </AnchorPane>
     </children>

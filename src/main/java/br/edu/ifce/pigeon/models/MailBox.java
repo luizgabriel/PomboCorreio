@@ -1,6 +1,7 @@
 package br.edu.ifce.pigeon.models;
 
 import br.edu.ifce.pigeon.jobs.PigeonThread;
+import br.edu.ifce.pigeon.jobs.UserThread;
 import br.edu.ifce.pigeon.presenters.IMailBoxListener;
 
 import java.util.Iterator;
@@ -30,26 +31,20 @@ public class MailBox implements Iterable<Mail> {
         this.pigeonThread = pigeonThread;
     }
 
-    public void lock() {
+    public void put(UserThread thread) {
         try {
             mainBox.acquire();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void put(Mail m) {
-        try {
-            queue.put(m);
+            if (thread.isRunning())
+                queue.put(new Mail(thread.getUser()));
+
+            if (pigeonThread != null && (queue.size() % pigeonThread.getMaxCapacity() == 0)) {
+                pigeonThread.wakeUp();
+            }
+
             listener.onChange(getCount(), getMaxCapacity());
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void unlock() {
-        if (pigeonThread != null && (queue.size() % pigeonThread.getMaxCapacity() == 0)) {
-            pigeonThread.wakeUp();
         }
     }
 

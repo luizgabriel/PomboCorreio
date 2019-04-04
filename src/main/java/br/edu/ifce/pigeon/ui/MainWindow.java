@@ -1,6 +1,7 @@
 package br.edu.ifce.pigeon.ui;
 
 import br.edu.ifce.pigeon.models.User;
+import br.edu.ifce.pigeon.navigation.Navigation;
 import br.edu.ifce.pigeon.presenters.MainPresenter;
 import br.edu.ifce.pigeon.views.IMainWindow;
 import com.jfoenix.controls.JFXButton;
@@ -14,22 +15,18 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.util.Pair;
+import javafx.scene.transform.Rotate;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MainWindow implements IMainWindow {
     private final Parent root = Component.load("main_screen.fxml");
     private final MainPresenter presenter = new MainPresenter(this);
 
     //Pigeon Frames
-    private final List<Image> left = new ArrayList<>();
-    private final List<Image> right = new ArrayList<>();
+    private final List<Image> pigeon = new ArrayList<>();
 
     private final Map<Integer, UserItem> usersItems = new HashMap<>();
 
@@ -63,6 +60,9 @@ public class MainWindow implements IMainWindow {
         firePigeonBtn.setOnMouseClicked(e -> presenter.onClickFirePigeonBtn());
         addUserBtn.setOnMouseClicked(e -> presenter.onClickAddUserBtn());
 
+        imageView.setTranslateZ(imageView.getBoundsInLocal().getWidth() / 2.0);
+        imageView.setRotationAxis(Rotate.Y_AXIS);
+
         presenter.onLoadView();
     }
 
@@ -83,41 +83,23 @@ public class MainWindow implements IMainWindow {
     public void loadPigeonFrames(int framesCount) {
         for (int i = 1; i <= framesCount; i++) {
             try {
-                BufferedImage image = Component.loadImageBuffer(String.format("pigeon/pigeon_frame0%d.png", i));
-                right.add(Component.loadImage(image));
-                left.add(Component.loadImage(flipImage(image)));
+                BufferedImage image = Component.loadImageBuffer(String.format("pigeon/koopatroopa_frame%02d.png", i));
+                pigeon.add(Component.loadImage(image));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    private PigeonFacingDirection lastDirection = PigeonFacingDirection.RIGHT;
+
     @Override
     public void setPigeonFrame(int frame, PigeonFacingDirection direction) {
-        Image pigeonFrame;
-        switch (direction) {
-            default:
-            case LEFT:
-                pigeonFrame = left.get(frame);
-                break;
-            case RIGHT:
-                pigeonFrame = right.get(frame);
-                break;
+        imageView.setImage(pigeon.get(frame));
+        if (lastDirection != direction) {
+            imageView.setRotate(180);
+            lastDirection = direction;
         }
-
-        this.imageView.setImage(pigeonFrame);
-    }
-
-    private static BufferedImage flipImage(BufferedImage image) {
-        BufferedImage mirrored = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                int pivot = image.getWidth() - x - 1;
-                int pixel = image.getRGB(x, y);
-                mirrored.setRGB(pivot, y, pixel);
-            }
-        }
-        return mirrored;
     }
 
     @Override
@@ -126,8 +108,11 @@ public class MainWindow implements IMainWindow {
     }
 
     @Override
-    public void setPigeonPosition(float position) {
-        this.imageView.setLayoutX(75 + position * 550);
+    public void setPigeonPosition(float time) {
+        this.imageView.setLayoutX(80 + time * 600);
+
+        // hmax = 250, hmin = 350, a = - 100*(hmax - hmin) =
+        this.imageView.setLayoutY(350 - 200*time + 200*Math.pow(time, 2));
     }
 
     @Override
@@ -180,7 +165,12 @@ public class MainWindow implements IMainWindow {
         dialog.setHeaderText("Informe a capacidade máxima da caixa de correio:");
         dialog.setContentText("Capacidade:");
 
-        presenter.onSetMailBoxCapacity(dialog.showAndWait().orElse("0"));
+        Optional<String> result = dialog.showAndWait();
+
+        if (result.isPresent())
+            presenter.onSetMailBoxCapacity(result.get());
+        else
+            Navigation.close();
     }
 
     public Parent getRoot() {

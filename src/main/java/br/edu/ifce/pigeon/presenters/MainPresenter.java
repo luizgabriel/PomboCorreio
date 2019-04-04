@@ -7,13 +7,15 @@ import br.edu.ifce.pigeon.views.IMainWindow;
 import br.edu.ifce.pigeon.views.IPigeonListener;
 import br.edu.ifce.pigeon.views.IUsersListener;
 
+import static br.edu.ifce.pigeon.views.IMainWindow.PigeonFacingDirection.LEFT;
+import static br.edu.ifce.pigeon.views.IMainWindow.PigeonFacingDirection.RIGHT;
+
 
 public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeonListener, IUsersListener, IMailBoxListener {
     private int currentPigeonFrame;
     private static final int MAX_PIGEON_FRAMES = 9;
 
     private final ThreadController controller;
-    private IMainWindow.PigeonFacingDirection direction;
 
     public MainPresenter(IMainWindow view) {
         super(view);
@@ -48,22 +50,22 @@ public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeon
 
     //<editor-fold desc="Pigeon Listener">
     @Override
-    public void onChangeState(AnimState state) {
+    public void onUpdate(float position, AnimState state) {
         currentPigeonFrame = (currentPigeonFrame + 1) % MAX_PIGEON_FRAMES;
 
         switch (state) {
             default:
             case LOADING:
             case TRAVEL_RIGHT_TO_LEFT:
-                direction = IMainWindow.PigeonFacingDirection.LEFT;
+                getView().setPigeonFrame(currentPigeonFrame, LEFT);
+                getView().setPigeonPosition(1 - position);
                 break;
             case TRAVEL_LEFT_TO_RIGHT:
             case UNLOADING:
-                direction = IMainWindow.PigeonFacingDirection.RIGHT;
+                getView().setPigeonFrame(currentPigeonFrame, RIGHT);
+                getView().setPigeonPosition(position);
                 break;
         }
-
-        getView().setPigeonFrame(currentPigeonFrame, direction);
     }
 
     @Override
@@ -79,19 +81,6 @@ public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeon
         getView().setHirePigeonDisable(true);
         getView().setFirePigeonDisable(false);
         getView().toggleMenu();
-    }
-
-    @Override
-    public void onChangePosition(float position) {
-        switch (direction) {
-            case LEFT:
-                getView().setPigeonPosition(1 - position);
-                break;
-            default:
-            case RIGHT:
-                getView().setPigeonPosition(position);
-                break;
-        }
     }
     //</editor-fold>
 

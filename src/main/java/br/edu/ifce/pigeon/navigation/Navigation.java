@@ -24,6 +24,8 @@ public final class Navigation {
         getInstance().getNavigationImpl().openCreateUser();
     }
 
+    public static void close() { getInstance().getNavigationImpl().close(); }
+
     public static Navigation getInstance() {
         if (instance == null) {
             instance = new Navigation();

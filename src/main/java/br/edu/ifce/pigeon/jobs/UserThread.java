@@ -6,20 +6,19 @@ import br.edu.ifce.pigeon.models.User;
 import br.edu.ifce.pigeon.views.IUsersListener;
 
 public class UserThread extends Thread {
-    public static final int FRAME_TICK = 10;
     private final IUsersListener view;
     private final User user;
     private final MailBox mailBox;
     private boolean alive;
 
-    public UserThread(IUsersListener view, MailBox mailBox, User user) {
+    UserThread(IUsersListener view, MailBox mailBox, User user) {
         this.view = view;
         this.user = user;
         this.mailBox = mailBox;
         this.alive = true;
     }
 
-    public void fire() {
+    void fire() {
         this.alive = false;
     }
 
@@ -29,10 +28,7 @@ public class UserThread extends Thread {
             write();
             if (mailBox.isFull())
                 view.onRefreshStatus(user.getId(), User.Status.SLEEPING, 1);
-            mailBox.lock();
-            if (this.alive)
-                mailBox.put(new Mail(this.user));
-            mailBox.unlock();
+            mailBox.put(this);
         }
     }
 
@@ -43,23 +39,16 @@ public class UserThread extends Thread {
         while (this.alive && (elapsed < writeTime)) {
             view.onRefreshStatus(user.getId(), User.Status.WRITING, elapsed / ((float) writeTime));
             elapsed += 50;
-            Count(50);
+
+            ThreadUtils.cpuBoundWait(50);
         }
     }
 
+    public boolean isRunning() {
+        return this.alive;
+    }
     public User getUser() {
         return this.user;
-    }
-
-    public static void Count (int time){
-        boolean flag = true;
-
-        long last = System.currentTimeMillis();
-        while (flag){
-            if( System.currentTimeMillis() - last >= time){
-                flag = false;
-            }
-        }
     }
 }
 

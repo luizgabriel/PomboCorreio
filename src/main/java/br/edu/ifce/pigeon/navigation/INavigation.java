@@ -4,4 +4,6 @@ public interface INavigation {
     void openCreatePigeon();
 
     void openCreateUser();
+
+    void close();
 }

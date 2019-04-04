@@ -8,9 +8,7 @@ public interface IPigeonListener {
         UNLOADING
     }
 
-    void onChangeState(AnimState state);
-
-    void onChangePosition(float position);
+    void onUpdate(float position, AnimState state);
 
     void onFired();
 

@@ -8,7 +8,6 @@ import java.util.concurrent.Semaphore;
 import static br.edu.ifce.pigeon.views.IPigeonListener.AnimState.*;
 
 public class PigeonThread extends Thread {
-    public static final int FRAME_TICK = 30;
     private final IPigeonListener view;
     private final MailBox mailBox;
     private int max_capacity;
@@ -18,24 +17,24 @@ public class PigeonThread extends Thread {
     private boolean alive;
     private Semaphore semaphore;
 
-    public PigeonThread(IPigeonListener view, MailBox mailBox) {
+    PigeonThread(IPigeonListener view, MailBox mailBox) {
         this.view = view;
         this.mailBox = mailBox;
         this.alive = true;
     }
 
-    public void init(int max_capacity, int loadTime, int unloadTime, int flightTime) {
+    void init(int max_capacity, int loadTime, int unloadTime, int flightTime) {
         this.max_capacity = max_capacity;
         this.loadTime = loadTime * 1000;
         this.unloadTime = unloadTime * 1000;
         this.flightTime = flightTime * 1000;
-        this.view.onChangeState(IPigeonListener.AnimState.LOADING);
         this.semaphore = new Semaphore(0);
 
+        this.view.onUpdate(1, LOADING);
         this.start();
     }
 
-    public void fire() {
+    void fire() {
         this.alive = false;
     }
 
@@ -44,12 +43,16 @@ public class PigeonThread extends Thread {
         while (this.alive) {
             try {
                 if (mailBox.getCount() < getMaxCapacity()) {
-                    view.onChangeState(LOADING);
-                    view.onChangePosition(1);
+                    view.onUpdate(1, LOADING);
                     semaphore.acquire();
                 }
 
                 loadBox();
+
+                for (int i = 0; i < this.max_capacity; i++) {
+                    this.mailBox.take();
+                }
+
                 fly(TRAVEL_LEFT_TO_RIGHT);
                 unloadBox();
                 fly(TRAVEL_RIGHT_TO_LEFT);
@@ -60,48 +63,24 @@ public class PigeonThread extends Thread {
     }
 
     private void loadBox() {
-
         long elapsed = 0;
 
         while (this.alive && (elapsed < loadTime)) {
+            view.onUpdate(1, LOADING);
             elapsed += 50;
 
-            view.onChangeState(LOADING);
-            view.onChangePosition(1);
-
-            Count(50);
+            ThreadUtils.cpuBoundWait(50);
         }
-
-        for (int i = 0; i < this.max_capacity; i++) {
-            this.mailBox.take();
-        }
-
-        /*
-        long last = System.currentTimeMillis();
-        long elapsed = last;
-        long mail_take = last;
-        while (this.alive && (System.currentTimeMillis() - last < loadTime)){
-            if (System.currentTimeMillis() - elapsed >= 80) {
-                elapsed = System.currentTimeMillis();
-                view.onChangeState(LOADING);
-                view.onChangePosition(1);
-            }
-            if (System.currentTimeMillis() - mail_take >= (loadTime / max_capacity)*0.8) {
-                mail_take = System.currentTimeMillis();
-                this.mailBox.take();
-            }
-        }
-        */
     }
 
     private void unloadBox() {
         int elapsed = 0;
 
         while (this.alive && (elapsed < unloadTime)) {
-            this.view.onChangeState(UNLOADING);
-            this.view.onChangePosition(1);
+            this.view.onUpdate(1, UNLOADING);
             elapsed += 50;
-            Count(50);
+
+            ThreadUtils.cpuBoundWait(50);
         }
     }
 
@@ -109,10 +88,10 @@ public class PigeonThread extends Thread {
         int elapsed = 0;
 
         while (this.alive && (elapsed < flightTime)) {
-            view.onChangeState(anim);
-            view.onChangePosition(elapsed / ((float) flightTime));
+            view.onUpdate(elapsed / ((float) flightTime), anim);
             elapsed += 50;
-            Count(50);
+
+            ThreadUtils.cpuBoundWait(50);
         }
     }
 
@@ -124,14 +103,4 @@ public class PigeonThread extends Thread {
         this.semaphore.release();
     }
 
-    public static void Count (int time){
-        boolean flag = true;
-
-        long last = System.currentTimeMillis();
-        while (flag){
-            if( System.currentTimeMillis() - last >= time){
-                flag = false;
-            }
-        }
-    }
 }
