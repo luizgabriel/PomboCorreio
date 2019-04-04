@@ -61,8 +61,7 @@ public class MainWindow implements IMainWindow {
         mailCountLabel = (Label) root.lookup("#mailCountLabel");
         usersBox = new HBox();
 
-
-        imageView.setLayoutY(100);
+        imageView.setLayoutY(355);
         usersScroll.setContent(usersBox);
 
         navigationDrawer.setSidePane(menu);
@@ -89,9 +88,9 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void loadPigeonFrames(int framesCount) {
-        for (int i = 1; i <= framesCount; i++) {
+        for (int i = 0; i < framesCount; i++) {
             try {
-                BufferedImage image = Component.loadImageBuffer(String.format("pigeon/pigeon_frame0%d.png", i));
+                BufferedImage image = Component.loadImageBuffer(String.format("pigeon/koopatroopa_frame0%d.png", i));
                 right.add(Component.loadImage(image));
                 left.add(Component.loadImage(flipImage(image)));
             } catch (IOException e) {
@@ -135,7 +134,7 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void setPigeonPosition(float position) {
-        this.imageView.setLayoutX(75 + position * 550);
+        this.imageView.setLayoutX(100 + position * 615);
     }
 
     @Override

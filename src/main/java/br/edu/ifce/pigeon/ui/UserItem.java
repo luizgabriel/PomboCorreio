@@ -34,7 +34,7 @@ public class UserItem implements IUserItem {
     @Override
     public void setImage(int image) {
         try {
-            Image img = Component.loadImage(String.format("user/user_tipo%02d.png", image));
+            Image img = Component.loadImage(String.format("user/user_tipo0%d.png", image));
             imageView.setImage(img);
         } catch (IOException e) {
             e.printStackTrace();

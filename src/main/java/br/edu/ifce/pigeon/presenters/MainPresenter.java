@@ -10,7 +10,7 @@ import br.edu.ifce.pigeon.views.IUsersListener;
 
 public class MainPresenter extends BasePresenter<IMainWindow> implements IPigeonListener, IUsersListener, IMailBoxListener {
     private int currentPigeonFrame;
-    private static final int MAX_PIGEON_FRAMES = 9;
+    private static final int MAX_PIGEON_FRAMES = 10;
 
     private final ThreadController controller;
     private IMainWindow.PigeonFacingDirection direction;
