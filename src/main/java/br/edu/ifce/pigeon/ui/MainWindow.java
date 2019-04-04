@@ -1,6 +1,7 @@
 package br.edu.ifce.pigeon.ui;
 
 import br.edu.ifce.pigeon.models.User;
+import br.edu.ifce.pigeon.navigation.Navigation;
 import br.edu.ifce.pigeon.presenters.MainPresenter;
 import br.edu.ifce.pigeon.views.IMainWindow;
 import com.jfoenix.controls.JFXButton;
@@ -13,27 +14,19 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
 import javafx.scene.layout.HBox;
-import javafx.util.Pair;
-
+import javafx.scene.transform.Rotate;
 
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MainWindow implements IMainWindow {
     private final Parent root = Component.load("main_screen.fxml");
     private final MainPresenter presenter = new MainPresenter(this);
 
     //Pigeon Frames
-    private final List<Image> left = new ArrayList<>();
-    private final List<Image> right = new ArrayList<>();
+    private final List<Image> pigeon = new ArrayList<>();
 
     private final Map<Integer, UserItem> usersItems = new HashMap<>();
 
@@ -42,10 +35,8 @@ public class MainWindow implements IMainWindow {
     private final JFXDrawer navigationDrawer;
     private final JFXButton hirePigeonBtn;
     private final JFXButton firePigeonBtn;
-
     private final HBox usersBox;
     private final Label mailCountLabel;
-
 
     public MainWindow() throws IOException {
         Parent menu = Component.load("navigation_menu.fxml");
@@ -61,14 +52,16 @@ public class MainWindow implements IMainWindow {
         mailCountLabel = (Label) root.lookup("#mailCountLabel");
         usersBox = new HBox();
 
-        imageView.setLayoutY(330);
+        imageView.setLayoutY(100);
         usersScroll.setContent(usersBox);
-
         navigationDrawer.setSidePane(menu);
         hamburgerBtn.setOnMouseClicked(e -> presenter.onClickMenuBtn());
         hirePigeonBtn.setOnMouseClicked(e -> presenter.onClickHirePigeonBtn());
         firePigeonBtn.setOnMouseClicked(e -> presenter.onClickFirePigeonBtn());
         addUserBtn.setOnMouseClicked(e -> presenter.onClickAddUserBtn());
+
+        imageView.setTranslateZ(imageView.getBoundsInLocal().getWidth() / 2.0);
+        imageView.setRotationAxis(Rotate.Y_AXIS);
 
         presenter.onLoadView();
     }
@@ -88,43 +81,25 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void loadPigeonFrames(int framesCount) {
-        for (int i = 0; i < framesCount; i++) {
+        for (int i = 1; i <= framesCount; i++) {
             try {
-                BufferedImage image = Component.loadImageBuffer(String.format("pigeon/koopatroopa_frame0%d.png", i));
-                right.add(Component.loadImage(image));
-                left.add(Component.loadImage(flipImage(image)));
+                BufferedImage image = Component.loadImageBuffer(String.format("pigeon/koopatroopa_frame%02d.png", i));
+                pigeon.add(Component.loadImage(image));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    private PigeonFacingDirection lastDirection = PigeonFacingDirection.RIGHT;
+
     @Override
     public void setPigeonFrame(int frame, PigeonFacingDirection direction) {
-        Image pigeonFrame;
-        switch (direction) {
-            default:
-            case LEFT:
-                pigeonFrame = left.get(frame);
-                break;
-            case RIGHT:
-                pigeonFrame = right.get(frame);
-                break;
+        imageView.setImage(pigeon.get(frame));
+        if (lastDirection != direction) {
+            imageView.setRotate(180);
+            lastDirection = direction;
         }
-
-        this.imageView.setImage(pigeonFrame);
-    }
-
-    private static BufferedImage flipImage(BufferedImage image) {
-        BufferedImage mirrored = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                int pivot = image.getWidth() - x - 1;
-                int pixel = image.getRGB(x, y);
-                mirrored.setRGB(pivot, y, pixel);
-            }
-        }
-        return mirrored;
     }
 
     @Override
@@ -133,8 +108,9 @@ public class MainWindow implements IMainWindow {
     }
 
     @Override
-    public void setPigeonPosition(float position) {
-        this.imageView.setLayoutX(100 + position * 615);
+    public void setPigeonPosition(float time) {
+        this.imageView.setLayoutX(80 + time * 650);
+        this.imageView.setLayoutY(300 - 300*time + 300*Math.pow(time, 2));
     }
 
     @Override
@@ -187,7 +163,12 @@ public class MainWindow implements IMainWindow {
         dialog.setHeaderText("Informe a capacidade máxima da caixa de correio:");
         dialog.setContentText("Capacidade:");
 
-        presenter.onSetMailBoxCapacity(dialog.showAndWait().orElse("0"));
+        Optional<String> result = dialog.showAndWait();
+
+        if (result.isPresent())
+            presenter.onSetMailBoxCapacity(result.get());
+        else
+            Navigation.close();
     }
 
     public Parent getRoot() {

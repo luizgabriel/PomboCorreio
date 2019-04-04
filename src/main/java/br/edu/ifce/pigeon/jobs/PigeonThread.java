@@ -8,7 +8,6 @@ import java.util.concurrent.Semaphore;
 import static br.edu.ifce.pigeon.views.IPigeonListener.AnimState.*;
 
 public class PigeonThread extends Thread {
-    public static final int FRAME_TICK = 30;
     private final IPigeonListener view;
     private final MailBox mailBox;
     private int max_capacity;
@@ -18,24 +17,24 @@ public class PigeonThread extends Thread {
     private boolean alive;
     private Semaphore semaphore;
 
-    public PigeonThread(IPigeonListener view, MailBox mailBox) {
+    PigeonThread(IPigeonListener view, MailBox mailBox) {
         this.view = view;
         this.mailBox = mailBox;
         this.alive = true;
     }
 
-    public void init(int max_capacity, int loadTime, int unloadTime, int flightTime) {
+    void init(int max_capacity, int loadTime, int unloadTime, int flightTime) {
         this.max_capacity = max_capacity;
         this.loadTime = loadTime * 1000;
         this.unloadTime = unloadTime * 1000;
         this.flightTime = flightTime * 1000;
-        this.view.onChangeState(IPigeonListener.AnimState.LOADING);
         this.semaphore = new Semaphore(0);
 
+        this.view.onUpdate(1, LOADING);
         this.start();
     }
 
-    public void fire() {
+    void fire() {
         this.alive = false;
     }
 
@@ -44,16 +43,16 @@ public class PigeonThread extends Thread {
         while (this.alive) {
             try {
                 if (mailBox.getCount() < getMaxCapacity()) {
-                    view.onChangeState(LOADING);
-                    view.onChangePosition(1);
+                    view.onUpdate(1, LOADING);
                     semaphore.acquire();
                 }
+
+                loadBox();
 
                 for (int i = 0; i < this.max_capacity; i++) {
                     this.mailBox.take();
                 }
 
-                loadBox();
                 fly(TRAVEL_LEFT_TO_RIGHT);
                 unloadBox();
                 fly(TRAVEL_RIGHT_TO_LEFT);
@@ -64,53 +63,35 @@ public class PigeonThread extends Thread {
     }
 
     private void loadBox() {
-        long tick = 0;
         long elapsed = 0;
-        long last = 0;
 
         while (this.alive && (elapsed < loadTime)) {
-            last = System.currentTimeMillis();
-            if (tick > FRAME_TICK) {
-                view.onChangeState(LOADING);
-                view.onChangePosition(1);
-                elapsed += FRAME_TICK;
-                tick = 0;
-            }
-            tick += (System.currentTimeMillis() - last);
+            view.onUpdate(1, LOADING);
+            elapsed += 50;
+
+            ThreadUtils.cpuBoundWait(50);
         }
     }
 
     private void unloadBox() {
-        long tick = 0;
-        long elapsed = 0;
-        long last = 0;
+        int elapsed = 0;
 
         while (this.alive && (elapsed < unloadTime)) {
-            last = System.currentTimeMillis();
-            if (tick > FRAME_TICK) {
-                this.view.onChangeState(UNLOADING);
-                this.view.onChangePosition(1);
-                elapsed += FRAME_TICK;
-                tick = 0;
-            }
-            tick += (System.currentTimeMillis() - last);
+            this.view.onUpdate(1, UNLOADING);
+            elapsed += 50;
+
+            ThreadUtils.cpuBoundWait(50);
         }
     }
 
     private void fly(IPigeonListener.AnimState anim) {
-        long tick = 0;
-        long elapsed = 0;
-        long last = 0;
+        int elapsed = 0;
 
         while (this.alive && (elapsed < flightTime)) {
-            last = System.currentTimeMillis();
-            if (tick > FRAME_TICK) {
-                view.onChangeState(anim);
-                view.onChangePosition(elapsed / ((float) flightTime));
-                elapsed += FRAME_TICK;
-                tick = 0;
-            }
-            tick += (System.currentTimeMillis() - last);
+            view.onUpdate(elapsed / ((float) flightTime), anim);
+            elapsed += 50;
+
+            ThreadUtils.cpuBoundWait(50);
         }
     }
 
@@ -121,4 +102,5 @@ public class PigeonThread extends Thread {
     public void wakeUp() {
         this.semaphore.release();
     }
+
 }

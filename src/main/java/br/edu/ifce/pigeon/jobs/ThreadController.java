@@ -45,10 +45,6 @@ public class ThreadController {
         }
     }
 
-    public MailBox getMailBox() {
-        return mailBox;
-    }
-
     public void initMailBox(int maxCapacity, IMailBoxListener listener) {
         this.mailBox = new MailBox(maxCapacity, listener);
     }

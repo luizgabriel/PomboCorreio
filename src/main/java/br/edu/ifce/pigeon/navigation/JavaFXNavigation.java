@@ -45,4 +45,8 @@ public class JavaFXNavigation implements INavigation {
         }
     }
 
+    @Override
+    public void close() {
+        primary.close();
+    }
 }

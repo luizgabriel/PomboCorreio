@@ -7,6 +7,7 @@ import br.edu.ifce.pigeon.views.IUserItem;
 public class UserItemPresenter extends BasePresenter<IUserItem> {
     private final ThreadController controller = ThreadController.getInstance();
     private final int userId;
+    private User user;
 
     public UserItemPresenter(IUserItem view, int userId) {
         super(view);
@@ -15,7 +16,7 @@ public class UserItemPresenter extends BasePresenter<IUserItem> {
 
     @Override
     public void onLoadView() {
-        User user = controller.getUser(userId);
+        user = controller.getUser(userId);
         getView().setImage(user.getImage());
         onRefresh(User.Status.WRITING, 0);
     }
@@ -25,10 +26,10 @@ public class UserItemPresenter extends BasePresenter<IUserItem> {
 
         switch (status) {
             case SLEEPING:
-                getView().setStatus("Dormindo...");
+                getView().setStatus(String.format("[TE: %d s] Dormindo...", user.getWriteTime()));
                 break;
             case WRITING:
-                getView().setStatus("Escrevendo...");
+                getView().setStatus(String.format("[TE: %d s] Escrevendo...", user.getWriteTime()));
                 break;
         }
     }
