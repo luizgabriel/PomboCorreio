@@ -61,7 +61,7 @@ public class MainWindow implements IMainWindow {
         mailCountLabel = (Label) root.lookup("#mailCountLabel");
         usersBox = new HBox();
 
-        imageView.setLayoutY(355);
+        imageView.setLayoutY(330);
         usersScroll.setContent(usersBox);
 
         navigationDrawer.setSidePane(menu);
