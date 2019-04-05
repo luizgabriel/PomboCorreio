@@ -60,9 +60,6 @@ public class MainWindow implements IMainWindow {
         firePigeonBtn.setOnMouseClicked(e -> presenter.onClickFirePigeonBtn());
         addUserBtn.setOnMouseClicked(e -> presenter.onClickAddUserBtn());
 
-        imageView.setTranslateZ(imageView.getBoundsInLocal().getWidth() / 2.0);
-        imageView.setRotationAxis(Rotate.Y_AXIS);
-
         presenter.onLoadView();
     }
 
@@ -91,15 +88,11 @@ public class MainWindow implements IMainWindow {
         }
     }
 
-    private PigeonFacingDirection lastDirection = PigeonFacingDirection.RIGHT;
-
     @Override
     public void setPigeonFrame(int frame, PigeonFacingDirection direction) {
-        imageView.setImage(pigeon.get(frame));
-        if (lastDirection != direction) {
-            imageView.setRotate(180);
-            lastDirection = direction;
-        }
+        Platform.runLater(() -> {
+            imageView.setImage(pigeon.get(frame));
+        });
     }
 
     @Override
@@ -109,8 +102,10 @@ public class MainWindow implements IMainWindow {
 
     @Override
     public void setPigeonPosition(float time) {
-        this.imageView.setLayoutX(80 + time * 650);
-        this.imageView.setLayoutY(300 - 300*time + 300*Math.pow(time, 2));
+        Platform.runLater(() -> {
+            this.imageView.setLayoutX(80 + time * 650);
+            this.imageView.setLayoutY(300 - 300*time + 300*Math.pow(time, 2));
+        });
     }
 
     @Override
