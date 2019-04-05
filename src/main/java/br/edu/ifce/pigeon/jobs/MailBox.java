@@ -1,18 +1,13 @@
 package br.edu.ifce.pigeon.jobs;
 
-import br.edu.ifce.pigeon.jobs.PigeonThread;
-import br.edu.ifce.pigeon.jobs.UserThread;
 import br.edu.ifce.pigeon.models.Mail;
 import br.edu.ifce.pigeon.presenters.IMailBoxListener;
 
-import java.util.Iterator;
-import java.util.Spliterator;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
-import java.util.function.Consumer;
 
-public class MailBox implements Iterable<Mail> {
+public class MailBox {
     private int maxCapacity;
     private final IMailBoxListener listener;
     private BlockingQueue<Mail> queue;
@@ -58,21 +53,6 @@ public class MailBox implements Iterable<Mail> {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public Iterator<Mail> iterator() {
-        return this.queue.iterator();
-    }
-
-    @Override
-    public void forEach(Consumer<? super Mail> action) {
-        this.queue.forEach(action);
-    }
-
-    @Override
-    public Spliterator<Mail> spliterator() {
-        return this.queue.spliterator();
     }
 
     public int getCount() {
