@@ -1,7 +1,8 @@
-package br.edu.ifce.pigeon.models;
+package br.edu.ifce.pigeon.jobs;
 
 import br.edu.ifce.pigeon.jobs.PigeonThread;
 import br.edu.ifce.pigeon.jobs.UserThread;
+import br.edu.ifce.pigeon.models.Mail;
 import br.edu.ifce.pigeon.presenters.IMailBoxListener;
 
 import java.util.Iterator;

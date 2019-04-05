@@ -1,6 +1,5 @@
 package br.edu.ifce.pigeon.jobs;
 
-import br.edu.ifce.pigeon.models.MailBox;
 import br.edu.ifce.pigeon.views.IPigeonListener;
 
 import java.util.concurrent.Semaphore;

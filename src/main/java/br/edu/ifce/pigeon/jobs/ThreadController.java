@@ -1,14 +1,12 @@
 package br.edu.ifce.pigeon.jobs;
 
-import br.edu.ifce.pigeon.models.MailBox;
 import br.edu.ifce.pigeon.models.User;
 
 import br.edu.ifce.pigeon.presenters.IMailBoxListener;
 import br.edu.ifce.pigeon.views.IPigeonListener;
 import br.edu.ifce.pigeon.views.IUsersListener;
-import java.io.FileInputStream;
+
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,7 +1,5 @@
 package br.edu.ifce.pigeon.jobs;
 
-import br.edu.ifce.pigeon.models.Mail;
-import br.edu.ifce.pigeon.models.MailBox;
 import br.edu.ifce.pigeon.models.User;
 import br.edu.ifce.pigeon.views.IUsersListener;
 
